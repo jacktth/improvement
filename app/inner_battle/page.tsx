@@ -1,9 +1,12 @@
 
+import AddCard from "@/components/inner_battle/AddCard";
+import GetAllCard from "@/components/inner_battle/GetAllCard";
+
 export default function Card() {
-    return (
-      <main className="">
-        
-      </main>
-    )
-  }
-  
+  return (
+    <div>
+      <AddCard />
+      <GetAllCard />
+    </div>
+  );
+}

@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
-const PeopleSchema = new mongoose.Schema({
+export interface IPeople {
+  name: string;
+  age: string;
+}
+
+const PeopleSchema = new mongoose.Schema<IPeople>({
   name: String,
   age: Number,
 });
