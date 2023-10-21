@@ -10,8 +10,8 @@ export default function Card() {
         {cards ? (
           cards.map((cardInfo) => (
             <div className="">
-              {cardInfo.title}
-              {cardInfo.content}
+              {<pre>{cardInfo.title}</pre>}
+              {<pre> {cardInfo.content}</pre>}
               {cardInfo.date.toString() }
 
             </div>

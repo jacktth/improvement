@@ -4,43 +4,45 @@ import { ChangeEvent, useRef, useState } from "react";
 
 function CardForm() {
   const [focusOnForm, setFocusOnForm] = useState(false);
-  const [textAreaContent, setTextAreaContent] = useState("");
-  const [textAreaTitle, setTextAreaTitle] = useState("");
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const textAreaContentRef = useRef<HTMLTextAreaElement>(null);
+  const textAreaTitleRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const handleTextareaSize = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const target = e.target as HTMLTextAreaElement;
-    if (textAreaRef.current) {
-      textAreaRef.current.style.height = `${target.scrollHeight}px`;
-    }
-  };
-  const handleTextareaInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const target = e.target as HTMLTextAreaElement;
-    const value = target.value;
-
     switch (target.name) {
       case "content":
-        setTextAreaContent(value);
+        if (textAreaContentRef.current) {
+          textAreaContentRef.current.style.height = `${target.scrollHeight}px`;
+        }
         break;
       case "title":
-        setTextAreaTitle(value);
-
+        if (textAreaTitleRef.current) {
+          textAreaTitleRef.current.style.height = `${target.scrollHeight}px`;
+        }
         break;
       default:
         console.error("unknown target name");
         break;
     }
   };
+
   const textareaOnChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
     handleTextareaSize(e);
-    handleTextareaInput(e);
+  };
+  const submitCardForm = () => {
+    if (textAreaContentRef.current && textAreaTitleRef.current) {
+      if (
+        textAreaContentRef.current.value !== "" ||
+        textAreaTitleRef.current.value !== ""
+      ) {
+        formRef.current?.requestSubmit();
+        textAreaContentRef.current.value = "";
+        textAreaTitleRef.current.value = "";
+      }
+    }
   };
   const formMissedFoucs = () => {
-    if (textAreaContent || textAreaTitle) {
-      formRef.current?.requestSubmit();
-      setTextAreaContent("")
-      setTextAreaTitle("")
-    }
+    submitCardForm();
     setFocusOnForm(false);
   };
   const Form = () => {
@@ -54,9 +56,8 @@ function CardForm() {
                 Title
                 <textarea
                   className="resize-none"
+                  ref={textAreaTitleRef}
                   name="title"
-                  value={textAreaTitle}
-                  onChange={(e) => textareaOnChangeHandler(e)}
                 />
               </label>
             ) : (
@@ -65,11 +66,10 @@ function CardForm() {
             <label htmlFor="">
               Content
               <textarea
+                key={"random1"}
                 className="resize-none"
-                value={textAreaContent}
-                ref={textAreaRef}
+                ref={textAreaContentRef}
                 name="content"
-                contentEditable={true}
                 onClick={() => setFocusOnForm(true)}
                 onChange={(e) => textareaOnChangeHandler(e)}
                 autoFocus={focusOnForm}
