@@ -17,5 +17,5 @@ const mongodbClient = async () => {
     console.log("error occurred ", e);
   }
 };
-
+mongodbClient()
 export default mongodbClient

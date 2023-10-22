@@ -1,9 +1,10 @@
 "use client";
-import { addCard } from "@/app/inner_battle/action";
+import { addCardAction } from "@/app/note/action";
+import { ICard } from "@/models/Card";
 import { ChangeEvent, useRef, useState } from "react";
 
-function CardForm() {
-  const [focusOnForm, setFocusOnForm] = useState(false);
+function ReadingCard(card: ICard) {
+  const [focusOnForm, setFocusOnForm] = useState(true);
   const textAreaContentRef = useRef<HTMLTextAreaElement>(null);
   const textAreaTitleRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -49,7 +50,7 @@ function CardForm() {
     return (
       <div>
         <main>
-          <form ref={formRef} action={addCard}>
+          <form ref={formRef} action={addCardAction}>
             {" "}
             {focusOnForm ? (
               <label htmlFor="">
@@ -57,6 +58,7 @@ function CardForm() {
                 <textarea
                   className="resize-none"
                   ref={textAreaTitleRef}
+                  value={card.title}
                   name="title"
                 />
               </label>
@@ -66,9 +68,9 @@ function CardForm() {
             <label htmlFor="">
               Content
               <textarea
-                key={"random1"}
                 className="resize-none"
                 ref={textAreaContentRef}
+                value={card.content}
                 name="content"
                 onClick={() => setFocusOnForm(true)}
                 onChange={(e) => textareaOnChangeHandler(e)}
@@ -91,4 +93,4 @@ function CardForm() {
   };
   return <Form />;
 }
-export default CardForm;
+export default ReadingCard;

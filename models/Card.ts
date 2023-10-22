@@ -6,6 +6,7 @@ export interface ICard {
   date: Date
 }
 
+
 const CardSchema = new mongoose.Schema<ICard>({
   title: String,
   content: String,
