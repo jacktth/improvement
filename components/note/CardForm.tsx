@@ -67,14 +67,15 @@ function CardForm({ title = "", content = "", id = "", index = 0 }) {
       const normalizedRefTitle = textAreaTitleRef.current.value
         .trim()
         .replace(/\r\n/g, "\n");
+      console.log("normalizedPropContent ",content);
+
       const normalizedPropContent = content.trim().replace(/\r\n/g, "\n");
+      
       const normalizedPropTitle = title.trim().replace(/\r\n/g, "\n");
       if (
         normalizedRefContent !== normalizedPropContent ||
         normalizedRefTitle !== normalizedPropTitle
       ) {
-       
-
         formRef.current?.requestSubmit();
         textAreaContentRef.current.value = "";
         textAreaTitleRef.current.value = "";
@@ -82,6 +83,7 @@ function CardForm({ title = "", content = "", id = "", index = 0 }) {
     }
   };
   const formMissedFoucs = () => {
+    document.body.style.overflow = "auto";
     updateCard();
     setFocusOnForm(false);
   };
@@ -90,94 +92,101 @@ function CardForm({ title = "", content = "", id = "", index = 0 }) {
     setFocusOnForm(false);
   };
   const viewCard = () => {
+    document.body.style.overflow = "hidden";
+
     setFocusOnForm(true);
   };
-
-  const Form = () => {
+  const SmallCard = () => {
     return (
-      <main>
-        <div
-          onClick={() => formMissedFoucs()}
-          hidden={!focusOnForm}
-          className="fixed h-screen w-screen  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-          >
-            <form ref={formRef} action={updateCardWithId} key={index}>
-              {focusOnForm ? (
-                <div>
-                  <label htmlFor="">
-                    Title
-                    <textarea
-                      className="resize-none"
-                      ref={textAreaTitleRef}
-                      defaultValue={title}
-                      name="title"
-                    />
-                  </label>
-                  <label htmlFor="">
-                    Content
-                    <textarea
-                      key={"random1"}
-                      className="resize-none"
-                      ref={textAreaContentRef}
-                      defaultValue={content}
-                      name="content"
-                      onClick={() => {
-                        setFocusOnForm(true);
-                      }}
-                      onChange={(e) => textareaOnChangeHandler(e)}
-                      // autoFocus={focusOnForm}
-                    />
-                  </label>
-                  <button
-                    //Dont change to submit, casuing error
-                    type="button"
-                    onClick={() => clickSubmitButtonHandler()}
-                  >
-                    Send
-                  </button>
-                </div>
-              ) : (
-                <>
-                  {" "}
-                  <label htmlFor="">
-                    Content
-                    <textarea
-                      key={"random1"}
-                      className="resize-none"
-                      ref={textAreaContentRef}
-                      defaultValue={content}
-                      name="content"
-                      onClick={() => {
-                        setFocusOnForm(true);
-                      }}
-                      onChange={(e) => textareaOnChangeHandler(e)}
-                      autoFocus={focusOnForm}
-                    />
-                  </label>
-                </>
-              )}
-            </form>
-          </div>
-        </div>
-
-        <div
-          ref={cardDisplayRef}
-          id={Number(index).toString()}
-          className={`border-2 border-gray-400 break-all break-words	${
-            focusOnForm ? "invisible" : "visible"
-          }`}
-          onClick={() => viewCard()}
-        >
-          <pre className="overflow-x-auto whitespace-pre-wrap ">{title}</pre>
-          <pre className="overflow-x-auto whitespace-pre-wrap "> {content}</pre>
-        </div>
-      </main>
+      <div
+        ref={cardDisplayRef}
+        id={Number(index).toString()}
+        className={`border-2 border-gray-400 break-all break-words	${
+          focusOnForm ? "invisible" : "visible"
+        }`}
+        onClick={() => viewCard()}
+      >
+        <pre className="overflow-x-auto whitespace-pre-wrap ">{title}</pre>
+        <pre className="overflow-x-auto whitespace-pre-wrap "> {content}</pre>
+      </div>
     );
   };
-  return <Form />;
+  const LargeCard = () => {
+    return (
+      <div
+        onClick={() => formMissedFoucs()}
+        hidden={!focusOnForm}
+        className="fixed h-screen w-screen  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+      >
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        >
+          <form ref={formRef} action={updateCardWithId} key={index}>
+            {focusOnForm ? (
+              <div>
+                <label htmlFor="">
+                  Title
+                  <textarea
+                    className="resize-none overflow-hidden"
+                    ref={textAreaTitleRef}
+                    defaultValue={title}
+                    name="title"
+                  />
+                </label>
+                <label htmlFor="">
+                  Content
+                  <textarea
+                    key={"random1"}
+                    className="resize-none"
+                    ref={textAreaContentRef}
+                    defaultValue={content}
+                    name="content"
+                    onClick={() => {
+                      setFocusOnForm(true);
+                    }}
+                    onChange={(e) => textareaOnChangeHandler(e)}
+                    // autoFocus={focusOnForm}
+                  />
+                </label>
+                <button
+                  //Dont change to submit, casuing error
+                  type="button"
+                  onClick={() => clickSubmitButtonHandler()}
+                >
+                  Close
+                </button>
+              </div>
+            ) : (
+              <>
+                {" "}
+                <label htmlFor="">
+                  Content
+                  <textarea
+                    key={"random1"}
+                    className="resize-none"
+                    ref={textAreaContentRef}
+                    defaultValue={content}
+                    name="content"
+                    onClick={() => {
+                      setFocusOnForm(true);
+                    }}
+                    onChange={(e) => textareaOnChangeHandler(e)}
+                    autoFocus={focusOnForm}
+                  />
+                </label>
+              </>
+            )}
+          </form>
+        </div>
+      </div>
+    );
+  };
+  return (
+    <main>
+      <LargeCard/>
+      <SmallCard />
+    </main>
+  );
 }
 export default CardForm;

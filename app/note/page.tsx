@@ -1,21 +1,22 @@
-import CardForm from "@/components/note/CardForm";
-import { ICard } from "@/models/Card";
 import CardsGallery from "@/components/note/CardsGallery";
-import { json } from "node:stream/consumers";
 import { getCardsAction } from "./action";
+import AddCardBar from "@/components/note/addCardBar";
+import SearchBar from "@/components/note/SearchBar";
+import { Provider } from "react-redux";
+import { store } from "../store";
 
 export default async function Card() {
-  const cards = JSON.parse(JSON.stringify(await getCardsAction())) 
+  const cards = JSON.parse(JSON.stringify(await getCardsAction()));
   
-
   return (
-    <div>
-      <CardForm></CardForm>
+   
+      <div>
+        <SearchBar />
 
-      <CardsGallery {...cards}></CardsGallery>
+        <AddCardBar></AddCardBar>
 
-    </div>
+        <CardsGallery {...cards}></CardsGallery>
+      </div>
+    
   );
 }
-
-
