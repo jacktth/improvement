@@ -90,7 +90,7 @@ function AddCardBar() {
                 type="button"
                 onClick={() => clickSubmitButtonHandler()}
               >
-                Send
+                Close
               </button>
             </div>
           ) : (
