@@ -4,6 +4,7 @@ import { ChangeEvent, useRef, useState } from "react";
 
 function AddCardBar() {
   const [focusOnForm, setFocusOnForm] = useState(false);
+  const [pin, setPin] = useState(false);
   const textAreaContentRef = useRef<HTMLTextAreaElement>(null);
   const textAreaTitleRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -30,25 +31,34 @@ function AddCardBar() {
     handleTextareaSize(e);
   };
   const addCard = () => {
-    if (textAreaContentRef.current && textAreaTitleRef.current) {
+    if (
+      textAreaContentRef.current &&
+      textAreaTitleRef.current &&
+      formRef.current
+    ) {
       if (
         textAreaContentRef.current.value !== "" ||
         textAreaTitleRef.current.value !== ""
       ) {
-        formRef.current?.requestSubmit();
+        console.log("addCard");
+
+        const formData = new FormData(formRef.current);
+        const addCardWithBinding = addCardAction.bind(null, pin, formData);
+        addCardWithBinding();
         textAreaContentRef.current.value = "";
         textAreaTitleRef.current.value = "";
+        setPin(false);
       }
+      setFocusOnForm(false);
+      setPin(false);
     }
   };
   const formMissedFoucs = () => {
     addCard();
-    setFocusOnForm(false);
   };
 
   const clickSubmitButtonHandler = () => {
     addCard();
-    setFocusOnForm(false);
   };
   const invisbleLayerCss = () => {
     if (focusOnForm) {
@@ -59,8 +69,12 @@ function AddCardBar() {
   };
   return (
     <div onClick={() => formMissedFoucs()} className={invisbleLayerCss()}>
-      <div  className="flex justify-center">
-        <form onClick={(e) => e.stopPropagation()} ref={formRef} action={addCardAction}>
+      <div className="flex justify-center">
+        <form
+          onClick={(e) => e.stopPropagation()}
+          ref={formRef}
+          action={addCardAction.bind(null, pin)}
+        >
           {focusOnForm ? (
             <div>
               <label htmlFor="">
@@ -83,6 +97,7 @@ function AddCardBar() {
                   }}
                   onChange={(e) => textareaOnChangeHandler(e)}
                   autoFocus={focusOnForm}
+                  placeholder="Take a note..."
                 />
               </label>
               <button
@@ -92,6 +107,12 @@ function AddCardBar() {
               >
                 Close
               </button>
+              <div className={pin ? "bg-yellow-500" : "bg-slate-600"}>
+                <button type="button" onClick={() => setPin(!pin)}>
+                  {" "}
+                  Pin
+                </button>
+              </div>
             </div>
           ) : (
             <>
@@ -106,6 +127,7 @@ function AddCardBar() {
                   onClick={() => {
                     setFocusOnForm(true);
                   }}
+                  placeholder="Take a note..."
                   onChange={(e) => textareaOnChangeHandler(e)}
                   autoFocus={focusOnForm}
                 />

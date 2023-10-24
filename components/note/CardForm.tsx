@@ -1,15 +1,35 @@
 "use client";
-import { updateCardsAction } from "@/app/note/action";
-import { json } from "node:stream/consumers";
+import {
+  PinCardsAction,
+  UnPinCardsAction,
+  updateCardsAction,
+} from "@/app/note/action";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { RootState } from "@/app/store";
+import { useDispatch, useSelector } from "react-redux";
+import { laterDoPin } from "@/app/note/noteSlice";
 
-function CardForm({ title = "", content = "", id = "", index = 0 }) {
+function CardForm({
+  title = "",
+  content = "",
+  cardId = "",
+  index = 0,
+  pinned = false,
+  editedDate = "",
+}) {
   const [focusOnForm, setFocusOnForm] = useState(false);
+  const [displayPin, setDisplayPin] = useState(pinned);
+  const [laterPin, setLaterPin] = useState(false);
+
   const textAreaContentRef = useRef<HTMLTextAreaElement>(null);
   const textAreaTitleRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const cardDisplayRef = useRef<HTMLDivElement>(null);
-  const updateCardWithId = updateCardsAction.bind(null, id);
+  const laterDoPinState: boolean = useSelector(
+    (state: RootState) => state.note.laterDoPin
+  );
+  const dispatch = useDispatch();
+  const updateCardWithId = updateCardsAction.bind(null, cardId);
   const handleTextareaSize = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const target = e.target as HTMLTextAreaElement;
     switch (target.name) {
@@ -32,33 +52,7 @@ function CardForm({ title = "", content = "", id = "", index = 0 }) {
   const textareaOnChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
     handleTextareaSize(e);
   };
-  const submitCardForm = () => {
-    if (textAreaContentRef.current && textAreaTitleRef.current) {
-      if (
-        (textAreaContentRef.current.value !== "" ||
-          textAreaTitleRef.current.value !== "") &&
-        (textAreaContentRef.current.value !== content ||
-          textAreaTitleRef.current.value !== title)
-      ) {
-        console.log(
-          "true",
-          "ref",
-          textAreaContentRef.current.value,
-          "con",
-          content
-        );
-        console.log("true", "title:", textAreaTitleRef.current.value, title);
-        console.log(
-          textAreaContentRef.current.value !== content,
-          textAreaTitleRef.current.value !== title
-        );
 
-        formRef.current?.requestSubmit();
-        textAreaContentRef.current.value = "";
-        textAreaTitleRef.current.value = "";
-      }
-    }
-  };
   const updateCard = () => {
     if (textAreaContentRef.current && textAreaTitleRef.current) {
       const normalizedRefContent = textAreaContentRef.current.value
@@ -67,10 +61,10 @@ function CardForm({ title = "", content = "", id = "", index = 0 }) {
       const normalizedRefTitle = textAreaTitleRef.current.value
         .trim()
         .replace(/\r\n/g, "\n");
-      console.log("normalizedPropContent ",content);
+      console.log("normalizedPropContent ", content);
 
       const normalizedPropContent = content.trim().replace(/\r\n/g, "\n");
-      
+
       const normalizedPropTitle = title.trim().replace(/\r\n/g, "\n");
       if (
         normalizedRefContent !== normalizedPropContent ||
@@ -81,20 +75,43 @@ function CardForm({ title = "", content = "", id = "", index = 0 }) {
         textAreaTitleRef.current.value = "";
       }
     }
+    if (laterPin) {
+      pinned ? UnPinCardsAction(cardId) : PinCardsAction(cardId);
+      dispatch(laterDoPin(false));
+    }
+    setFocusOnForm(false);
+    setLaterPin(false);
   };
   const formMissedFoucs = () => {
     document.body.style.overflow = "auto";
     updateCard();
-    setFocusOnForm(false);
   };
   const clickSubmitButtonHandler = () => {
     updateCard();
-    setFocusOnForm(false);
   };
   const viewCard = () => {
     document.body.style.overflow = "hidden";
 
     setFocusOnForm(true);
+  };
+  const clickPinButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    setDisplayPin(!displayPin);
+
+    if (!displayPin) {
+      if (focusOnForm) {
+        setLaterPin(true);
+      } else {
+        PinCardsAction(cardId);
+      }
+    } else {
+      if (focusOnForm) {
+        setLaterPin(true);
+      } else {
+        UnPinCardsAction(cardId);
+      }
+    }
   };
   const SmallCard = () => {
     return (
@@ -106,8 +123,18 @@ function CardForm({ title = "", content = "", id = "", index = 0 }) {
         }`}
         onClick={() => viewCard()}
       >
+        <button
+          className={displayPin ? "bg-yellow-500 z-50" : "bg-slate-600 z-50"}
+          onClick={(e) => {
+            clickPinButtonHandler(e);
+          }}
+        >
+          <div>Pin</div>
+        </button>
+
         <pre className="overflow-x-auto whitespace-pre-wrap ">{title}</pre>
-        <pre className="overflow-x-auto whitespace-pre-wrap "> {content}</pre>
+        <pre className="overflow-x-auto whitespace-pre-wrap ">{content}</pre>
+        <div>{editedDate}</div>
       </div>
     );
   };
@@ -122,6 +149,14 @@ function CardForm({ title = "", content = "", id = "", index = 0 }) {
           onClick={(e) => e.stopPropagation()}
           className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
         >
+          <button
+            className={displayPin ? "bg-yellow-500 z-50" : "bg-slate-600 z-50"}
+            onClick={(e) => {
+              clickPinButtonHandler(e);
+            }}
+          >
+            <div>Pin</div>
+          </button>
           <form ref={formRef} action={updateCardWithId} key={index}>
             {focusOnForm ? (
               <div>
@@ -184,7 +219,7 @@ function CardForm({ title = "", content = "", id = "", index = 0 }) {
   };
   return (
     <main>
-      <LargeCard/>
+      <LargeCard />
       <SmallCard />
     </main>
   );
