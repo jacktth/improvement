@@ -11,7 +11,6 @@ export default async function Card() {
   );
   return (
     <div>
-      <SearchBar />
 
       <AddCardBar></AddCardBar>
 

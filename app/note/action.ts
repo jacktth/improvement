@@ -52,13 +52,26 @@ export async function getCardsAction(): Promise<ClassifiedCard> {
   return resCardTypes;
 }
 
-export async function updateCardsAction(cardId: string, formData: FormData) {
+// export async function updateCardsAction(cardId: string, formData: FormData) {
+//   await mongodbClient();
+//   const now = new Date();
+  
+//   const res = await Card.updateOne<ICard>(
+//     { _id: cardId },
+//     { title: formData.get("title"), content: formData.get("content"),editedDate:now }
+//   );
+//   console.log(res);
+//   revalidatePath("/note");
+
+//   return res;
+// }
+export async function updateCardsAction(cardId: string,title:string, content:string,) {
   await mongodbClient();
   const now = new Date();
   
   const res = await Card.updateOne<ICard>(
     { _id: cardId },
-    { title: formData.get("title"), content: formData.get("content"),editedDate:now }
+    { title:title, content: content,editedDate:now }
   );
   console.log(res);
   revalidatePath("/note");
@@ -66,7 +79,7 @@ export async function updateCardsAction(cardId: string, formData: FormData) {
   return res;
 }
 
-export async function PinCardsAction(cardId: string) {
+export async function pinCardsAction(cardId: string) {
   await mongodbClient();
 
   const res = await Card.updateOne({ _id: cardId }, { pinned: true });
@@ -75,7 +88,7 @@ export async function PinCardsAction(cardId: string) {
   revalidatePath("/note");
 }
 
-export async function UnPinCardsAction(cardId: string) {
+export async function unPinCardsAction(cardId: string) {
   await mongodbClient();
 
   const res = await Card.updateOne({ _id: cardId }, { pinned: false });
@@ -84,9 +97,10 @@ export async function UnPinCardsAction(cardId: string) {
   revalidatePath("/note");
 }
 
-export async function searchCardsWithInputTextACtion(formData: FormData) {
+export async function searchCardsWithInputTextACtion(searchText:string) {
   await mongodbClient();
-  const text = formData.get("text")?.toString();
+  // const text = formData.get("text")?.toString();
+  const text = searchText
   if (text !== undefined && text !== null) {
     const res = await Card.aggregate<HydratedDocument<ICard>>([
       {
@@ -102,7 +116,7 @@ export async function searchCardsWithInputTextACtion(formData: FormData) {
       return { ...card, _id: card._id.toString(),__v:card.__v };
     });
     console.log(parsedRes);
-    revalidatePath("/note");
+    revalidatePath("/searchedNotes/"+searchText);
     return parsedRes;
   }
 }

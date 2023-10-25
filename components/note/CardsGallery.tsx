@@ -1,5 +1,5 @@
 "use client";
-import { ICard, ICardAfterParsed } from "@/models/Card";
+import { ICardAfterParsed } from "@/models/Card";
 import CardForm from "./CardForm";
 import { RootState } from "@/app/store";
 import { useSelector } from "react-redux";
@@ -12,24 +12,7 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
     (state: RootState) => state.note.textSearchedCards
   );
   const displayedCards = searchedCard.length > 0 ? searchedCard : noPinnedCards;
-  const SearchedCards = () => {
-    return (
-      <div className="grid grid-cols-4 gap-4">
-        {searchedCard.map((cardInfo: ICardAfterParsed, i) => (
-          <div key={cardInfo._id}>
-            <CardForm
-              content={cardInfo.content}
-              title={cardInfo.title}
-              cardId={cardInfo._id}
-              index={i}
-              pinned={cardInfo.pinned}
-              editedDate={cardInfo.editedDate.toString()}
-            />
-          </div>
-        ))}
-      </div>
-    );
-  };
+  
   const NormalDisplayedCards = ()=>{
     return (
       <>
@@ -76,9 +59,8 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
   }
   return (
    <>
-   {
-    searchedCard.length > 0 ? <SearchedCards/> : <NormalDisplayedCards/>
-   }
+
+<NormalDisplayedCards/>
    </>
   );
 }

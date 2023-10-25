@@ -1,44 +1,52 @@
 "use client";
-import { searchCardsWithInputTextACtion } from "@/app/note/action";
-import { increment, addSearchedCard } from "@/app/note/noteSlice";
-import { ICard, ICardAfterParsed } from "@/models/Card";
-import { useRef } from "react";
+
+import { permanentRedirect, redirect } from "next/navigation";
+import { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 export type DocCardId = {
   _id: string;
 };
+
 function SearchBar() {
+  const [searchText, setSearcText] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
-  const search = async (forData: FormData) => {
-    const res = await searchCardsWithInputTextACtion(forData);
-    const parsedObjectRes = Object.values<ICardAfterParsed>(
-      JSON.parse(JSON.stringify(await res))
-    );
-
-    dispatch(addSearchedCard(parsedObjectRes));
-    console.log(parsedObjectRes);
+  const search = async (formData: FormData) => {
+    // const res = await searchCardsWithInputTextACtion(formData);
+    // const parsedObjectRes = Object.values<ICardAfterParsed>(
+    //   JSON.parse(JSON.stringify(await res))
+    // );
+    redirect(`/searchedNotes/${searchText}/`);
+    // dispatch(addSearchedCard(parsedObjectRes));
+    // console.log(parsedObjectRes);
   };
   const clearButtonHandler = () => {
     if (inputRef.current) {
       inputRef.current.value = "";
-      dispatch(addSearchedCard([]))
     }
+    redirect(`/note`);
   };
   return (
     <>
-      <form action={search}>
+    <div className="flex">
+    <form action={search}>
         <input
           className="border-2 border-emerald-600 w-10"
           title="Search"
           name="text"
           type="text"
           ref={inputRef}
+          value={searchText}
+          onChange={(e) => setSearcText(e.target.value)}
         />
-        <button type="button" onClick={clearButtonHandler}>
+      </form>
+      <form action={clearButtonHandler}>
+        <button type="submit" onClick={() => clearButtonHandler()}>
           X
         </button>
       </form>
+    </div>
+   
     </>
   );
 }

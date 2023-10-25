@@ -1,11 +1,10 @@
 "use client";
 import {
-  PinCardsAction,
-  UnPinCardsAction,
+  pinCardsAction,
+  unPinCardsAction,
   updateCardsAction,
 } from "@/app/note/action";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { RootState } from "@/app/store";
 import { useDispatch, useSelector } from "react-redux";
 import { laterDoPin } from "@/app/note/noteSlice";
 
@@ -20,45 +19,63 @@ function CardForm({
   const [focusOnForm, setFocusOnForm] = useState(false);
   const [displayPin, setDisplayPin] = useState(pinned);
   const [laterPin, setLaterPin] = useState(false);
+  const [inputContent, setInputContent] = useState(content);
+  const [inputTitle, setInputTitle] = useState(title);
 
   const textAreaContentRef = useRef<HTMLTextAreaElement>(null);
   const textAreaTitleRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const cardDisplayRef = useRef<HTMLDivElement>(null);
-  const laterDoPinState: boolean = useSelector(
-    (state: RootState) => state.note.laterDoPin
-  );
+  const divTitleRef = useRef<HTMLDivElement>(null);
+  const divContentRef = useRef<HTMLDivElement>(null);
+
   const dispatch = useDispatch();
-  const updateCardWithId = updateCardsAction.bind(null, cardId);
-  const handleTextareaSize = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const target = e.target as HTMLTextAreaElement;
-    switch (target.name) {
-      case "content":
-        if (textAreaContentRef.current) {
-          textAreaContentRef.current.style.height = `${target.scrollHeight}px`;
-        }
-        break;
-      case "title":
-        if (textAreaTitleRef.current) {
-          textAreaTitleRef.current.style.height = `${target.scrollHeight}px`;
-        }
-        break;
-      default:
-        console.error("unknown target name");
-        break;
-    }
-  };
+  // const updateCardWithId = UpdateCardsAction.bind(null, cardId);
+  // const handleTextareaSize = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  //   const target = e.target as HTMLTextAreaElement;
+  //   switch (target.name) {
+  //     case "content":
+  //       if (textAreaContentRef.current) {
+  //         textAreaContentRef.current.style.height = `${target.scrollHeight}px`;
+  //       }
+  //       break;
+  //     case "title":
+  //       if (textAreaTitleRef.current) {
+  //         textAreaTitleRef.current.style.height = `${target.scrollHeight}px`;
+  //       }
+  //       break;
+  //     default:
+  //       console.error("unknown target name");
+  //       break;
+  //   }
+  // };
 
-  const textareaOnChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    handleTextareaSize(e);
-  };
+  // const textareaContentOnChangeHandler = (
+  //   e: ChangeEvent<HTMLTextAreaElement>
+  // ) => {
+  //   setInputContent(e.target.value);
+  //   handleTextareaSize(e);
+  //   console.log("inputContent", inputContent);
+  // };
 
-  const updateCard = () => {
-    if (textAreaContentRef.current && textAreaTitleRef.current) {
-      const normalizedRefContent = textAreaContentRef.current.value
+  // const textareaTitleOnChangeHandler = (
+  //   e: ChangeEvent<HTMLTextAreaElement>
+  // ) => {
+  //   setInputTitle(e.target.value);
+  //   handleTextareaSize(e);
+  // };
+
+  const updateCardFromDiv = () => {
+    if (
+      divContentRef.current &&
+      divTitleRef.current &&
+      divTitleRef.current.textContent &&
+      divContentRef.current.textContent
+    ) {
+      const normalizedRefContent = divContentRef.current.textContent
         .trim()
         .replace(/\r\n/g, "\n");
-      const normalizedRefTitle = textAreaTitleRef.current.value
+      const normalizedRefTitle = divTitleRef.current.textContent
         .trim()
         .replace(/\r\n/g, "\n");
       console.log("normalizedPropContent ", content);
@@ -70,24 +87,60 @@ function CardForm({
         normalizedRefContent !== normalizedPropContent ||
         normalizedRefTitle !== normalizedPropTitle
       ) {
-        formRef.current?.requestSubmit();
-        textAreaContentRef.current.value = "";
-        textAreaTitleRef.current.value = "";
+        updateCardsAction(cardId, normalizedRefTitle, normalizedRefContent);
+        setInputTitle(normalizedRefTitle);
+
+        setInputContent(normalizedRefContent);
+
+        // formRef.current?.requestSubmit();
+        // divContentRef.current.textContent = "";
+        // divTitleRef.current.textContent = "";
       }
     }
     if (laterPin) {
-      pinned ? UnPinCardsAction(cardId) : PinCardsAction(cardId);
+      pinned ? unPinCardsAction(cardId) : pinCardsAction(cardId);
       dispatch(laterDoPin(false));
     }
     setFocusOnForm(false);
     setLaterPin(false);
   };
+  // const updateCard = () => {
+  //   if (textAreaContentRef.current && textAreaTitleRef.current) {
+  //     const normalizedRefContent = textAreaContentRef.current.value
+  //       .trim()
+  //       .replace(/\r\n/g, "\n");
+  //     const normalizedRefTitle = textAreaTitleRef.current.value
+  //       .trim()
+  //       .replace(/\r\n/g, "\n");
+  //     console.log("normalizedPropContent ", content);
+
+  //     const normalizedPropContent = content.trim().replace(/\r\n/g, "\n");
+
+  //     const normalizedPropTitle = title.trim().replace(/\r\n/g, "\n");
+  //     if (
+  //       normalizedRefContent !== normalizedPropContent ||
+  //       normalizedRefTitle !== normalizedPropTitle
+  //     ) {
+  //       formRef.current?.requestSubmit();
+  //       textAreaContentRef.current.value = "";
+  //       textAreaTitleRef.current.value = "";
+  //     }
+  //   }
+  //   if (laterPin) {
+  //     pinned ? UnPinCardsAction(cardId) : PinCardsAction(cardId);
+  //     dispatch(laterDoPin(false));
+  //   }
+  //   setFocusOnForm(false);
+  //   setLaterPin(false);
+  // };
   const formMissedFoucs = () => {
     document.body.style.overflow = "auto";
-    updateCard();
+    // updateCard();
+    updateCardFromDiv();
   };
   const clickSubmitButtonHandler = () => {
-    updateCard();
+    // updateCard();
+    updateCardFromDiv();
   };
   const viewCard = () => {
     document.body.style.overflow = "hidden";
@@ -103,13 +156,13 @@ function CardForm({
       if (focusOnForm) {
         setLaterPin(true);
       } else {
-        PinCardsAction(cardId);
+        pinCardsAction(cardId);
       }
     } else {
       if (focusOnForm) {
         setLaterPin(true);
       } else {
-        UnPinCardsAction(cardId);
+        unPinCardsAction(cardId);
       }
     }
   };
@@ -131,10 +184,10 @@ function CardForm({
         >
           <div>Pin</div>
         </button>
-
-        <pre className="overflow-x-auto whitespace-pre-wrap ">{title}</pre>
-        <pre className="overflow-x-auto whitespace-pre-wrap ">{content}</pre>
-        <div>{editedDate}</div>
+        <pre className="overflow-x-auto whitespace-pre-wrap ">{inputTitle}</pre>
+        <pre className="overflow-x-auto whitespace-pre-wrap ">
+          {inputContent}
+        </pre>
       </div>
     );
   };
@@ -157,61 +210,75 @@ function CardForm({
           >
             <div>Pin</div>
           </button>
-          <form ref={formRef} action={updateCardWithId} key={index}>
-            {focusOnForm ? (
-              <div>
-                <label htmlFor="">
+          <form ref={formRef} key={index}>
+            <div
+              className={`border-2 border-gray-400 break-all break-words`}
+              hidden={!focusOnForm}
+            >
+              {/* <label htmlFor="">
                   Title
                   <textarea
                     className="resize-none overflow-hidden"
                     ref={textAreaTitleRef}
-                    defaultValue={title}
+                    defaultValue={inputTitle}
+                    onBlur={(e) => textareaTitleOnChangeHandler(e)}
+                    onChange={(e) => textareaTitleOnChangeHandler(e)}
                     name="title"
                   />
-                </label>
-                <label htmlFor="">
+                </label> */}
+              {/* <label htmlFor="">
                   Content
                   <textarea
                     key={"random1"}
                     className="resize-none"
                     ref={textAreaContentRef}
-                    defaultValue={content}
+                    // defaultValue={content}
                     name="content"
-                    onClick={() => {
-                      setFocusOnForm(true);
-                    }}
-                    onChange={(e) => textareaOnChangeHandler(e)}
+                    defaultValue={inputContent}
+                    onBlur={(e) => textareaContentOnChangeHandler(e)}
                     // autoFocus={focusOnForm}
                   />
-                </label>
-                <button
-                  //Dont change to submit, casuing error
-                  type="button"
-                  onClick={() => clickSubmitButtonHandler()}
+                </label> */}
+              <label htmlFor="">
+                Title
+                <div
+                  className="hover:cursor-text"
+                  ref={divTitleRef}
+                  contentEditable
+                  defaultValue={inputTitle}
+                  autoFocus={focusOnForm}
+                  suppressContentEditableWarning
                 >
-                  Close
-                </button>
-              </div>
-            ) : (
-              <>
-                {" "}
-                <label htmlFor="">
-                  Content
-                  <textarea
-                    key={"random1"}
-                    className="resize-none"
-                    ref={textAreaContentRef}
-                    defaultValue={content}
-                    name="content"
-                    onClick={() => {
-                      setFocusOnForm(true);
-                    }}
-                    onChange={(e) => textareaOnChangeHandler(e)}
-                    autoFocus={focusOnForm}
-                  />
-                </label>
-              </>
-            )}
+                  <pre>{inputTitle}</pre>
+                </div>
+              </label>
+              <label htmlFor="">
+                Content
+                <div
+                  className="hover:cursor-text"
+                  ref={divContentRef}
+                  contentEditable
+                  defaultValue={inputContent}
+                  onClick={() => {
+                    setFocusOnForm(true);
+                  }}
+                  suppressContentEditableWarning
+                  autoFocus={focusOnForm}
+                >
+                  <pre>{inputContent}</pre>
+                </div>
+              </label>
+              <input type="text" />
+
+              <div>{editedDate}</div>
+              <button
+                //Dont change to submit, casuing error
+                type="button"
+                onClick={() => clickSubmitButtonHandler()}
+              >
+                Close
+              </button>
+            </div>
           </form>
         </div>
       </div>
