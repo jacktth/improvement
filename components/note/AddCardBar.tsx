@@ -37,9 +37,8 @@ function AddCardBar() {
     
     if (
       divContentRef.current &&
-      divTitleRef.current &&
-      divTitleRef.current.innerText &&
-      divContentRef.current.innerText
+      divTitleRef.current 
+ 
     ) {
       if (
         divTitleRef.current.innerText !== "" ||

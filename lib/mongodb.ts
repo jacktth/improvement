@@ -1,16 +1,16 @@
 import mongoose from "mongoose";
 
 const mongodbClient = async () => {
-  const MONGODB_URI = process.env.MONGODB_URI;
-  if (!MONGODB_URI) {
+  const MONGODB_URL = process.env.MONGODB_URL;
+  if (!MONGODB_URL) {
     throw new Error(
-      "Please define the MONGODB_URI environment variable inside .env.local"
+      "Please define the MONGODB_URL environment variable inside .env.local"
     );
   }
 
   let client;
   try {
-    client = await mongoose.connect(MONGODB_URI);
+    client = await mongoose.connect(MONGODB_URL);
     console.log("db connected successfully");
     return client
   } catch (e) {
