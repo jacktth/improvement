@@ -268,7 +268,6 @@ function CardForm({
                   <pre>{inputContent}</pre>
                 </div>
               </label>
-              <input type="text" />
 
               <div>{editedDate}</div>
               <button
@@ -285,7 +284,7 @@ function CardForm({
     );
   };
   return (
-    <main>
+    <main className="w-full">
       <LargeCard />
       <SmallCard />
     </main>

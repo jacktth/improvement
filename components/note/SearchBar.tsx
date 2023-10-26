@@ -1,8 +1,7 @@
 "use client";
 
-import { permanentRedirect, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 export type DocCardId = {
   _id: string;
 };
@@ -10,15 +9,8 @@ export type DocCardId = {
 function SearchBar() {
   const [searchText, setSearcText] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const dispatch = useDispatch();
   const search = async (formData: FormData) => {
-    // const res = await searchCardsWithInputTextACtion(formData);
-    // const parsedObjectRes = Object.values<ICardAfterParsed>(
-    //   JSON.parse(JSON.stringify(await res))
-    // );
     redirect(`/searchedNotes/${searchText}/`);
-    // dispatch(addSearchedCard(parsedObjectRes));
-    // console.log(parsedObjectRes);
   };
   const clearButtonHandler = () => {
     if (inputRef.current) {
@@ -28,25 +20,29 @@ function SearchBar() {
   };
   return (
     <>
-    <div className="flex">
-    <form action={search}>
-        <input
-          className="border-2 border-emerald-600 w-10"
-          title="Search"
-          name="text"
-          type="text"
-          ref={inputRef}
-          value={searchText}
-          onChange={(e) => setSearcText(e.target.value)}
-        />
-      </form>
-      <form action={clearButtonHandler}>
-        <button type="submit" onClick={() => clearButtonHandler()}>
-          X
-        </button>
-      </form>
-    </div>
-   
+      <div className="flex bg-gray-400 ">
+        <form action={clearButtonHandler}>
+          <button type="submit" onClick={clearButtonHandler}>
+            Search
+          </button>
+        </form>
+        <form action={search}>
+          <input
+            className="border-2 w-30"
+            title="Search"
+            name="text"
+            type="text"
+            ref={inputRef}
+            value={searchText}
+            onChange={(e) => setSearcText(e.target.value)}
+          />
+        </form>
+        <form action={clearButtonHandler}>
+          <button type="submit" onClick={() => clearButtonHandler()}>
+            X
+          </button>
+        </form>
+      </div>
     </>
   );
 }

@@ -1,6 +1,5 @@
 import CardForm from "@/components/note/CardForm";
 import { ICardAfterParsed } from "@/models/Card";
-import Image from "next/image";
 import { searchCardsWithInputTextACtion } from "../../note/action";
 
 export default async function SearchedCardsPage({ params }: { params: { slug: string } }) {
@@ -10,7 +9,7 @@ export default async function SearchedCardsPage({ params }: { params: { slug: st
         );
     
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-4 gap-4 w-full">
       {parsedObjectRes.map((cardInfo: ICardAfterParsed, i) => (
         <div key={cardInfo._id}>
           <CardForm

@@ -20,8 +20,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ReduxProvider>
-          <SearchBar />
-          {children}
+          <div className="flex fixed justify-between w-screen h-[50px] bg-gray-600">
+            <div className="text-white">icon</div>
+            <SearchBar />
+            <div className="text-white">tools</div>
+          </div>
+          <div className="flex fixed top-[50px] w-screen">
+            <div className="w-44 bg-gray-600 h-screen text-white">left bar</div>
+            <div className="w-full">{children}</div>
+          </div>
         </ReduxProvider>
       </body>
     </html>

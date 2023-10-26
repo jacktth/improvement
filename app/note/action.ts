@@ -6,13 +6,38 @@ import { HydratedDocument } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { type } from "os";
 
-export async function addCardAction(pinned: boolean, forData: FormData) {
+// export async function addCardAction(pinned: boolean, forData: FormData) {
+//   try {
+//     await mongodbClient();
+//     console.log("start");
+    
+//     const title = forData.get("title")?.toString();
+//     const content = forData.get("content")?.toString();
+//     const date = new Date();
+//     if (title!==undefined && content!==undefined) {
+//       const cardDetail: ICard = {
+//         title: title,
+//         content: content,
+//         date: date,
+//         editedDate: date,
+//         pinned: pinned,
+//         label: [],
+//       };
+//       await Card.create<ICard>(cardDetail);
+//       revalidatePath("/note");
+//     }
+//   } catch (error) {
+//     console.log(error);
+    
+//   }
+
+// }
+export async function addCardAction(pinned: boolean, content:string,title:string) {
   try {
     await mongodbClient();
-    console.log("start");
+    console.log("start adding");
     
-    const title = forData.get("title")?.toString();
-    const content = forData.get("content")?.toString();
+
     const date = new Date();
     if (title!==undefined && content!==undefined) {
       const cardDetail: ICard = {

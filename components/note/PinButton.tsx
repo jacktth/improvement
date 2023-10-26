@@ -1,6 +1,4 @@
 "use client";
-import { PinCardsAction, UnPinCardsAction } from "@/app/note/action";
-import { doPin, laterDoPin } from "@/app/note/noteSlice";
 import { RootState } from "@/app/store";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,17 +45,7 @@ function PinButton({ cardId, pinned, focusingOnForm }: PinButtonProps) {
   };
   return (
     <>
-      <button
-        className={displayPinned ? "bg-yellow-500 z-50" : "bg-slate-600 z-50"}
-        onClick={(e) => {
-          clickPinButtonHandler(e);
-        }}
-      >
-        <div
-        >
-          Pin
-        </div>
-      </button>
+
     
 
     </>
