@@ -7,6 +7,7 @@ import {
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { laterDoPin } from "@/app/note/noteSlice";
+import { AnimatePresence, motion } from "framer-motion";
 
 function CardForm({
   title = "",
@@ -21,50 +22,11 @@ function CardForm({
   const [laterPin, setLaterPin] = useState(false);
   const [inputContent, setInputContent] = useState(content);
   const [inputTitle, setInputTitle] = useState(title);
-
-  const textAreaContentRef = useRef<HTMLTextAreaElement>(null);
-  const textAreaTitleRef = useRef<HTMLTextAreaElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const cardDisplayRef = useRef<HTMLDivElement>(null);
   const divTitleRef = useRef<HTMLDivElement>(null);
   const divContentRef = useRef<HTMLDivElement>(null);
-
   const dispatch = useDispatch();
-  // const updateCardWithId = UpdateCardsAction.bind(null, cardId);
-  // const handleTextareaSize = (e: ChangeEvent<HTMLTextAreaElement>) => {
-  //   const target = e.target as HTMLTextAreaElement;
-  //   switch (target.name) {
-  //     case "content":
-  //       if (textAreaContentRef.current) {
-  //         textAreaContentRef.current.style.height = `${target.scrollHeight}px`;
-  //       }
-  //       break;
-  //     case "title":
-  //       if (textAreaTitleRef.current) {
-  //         textAreaTitleRef.current.style.height = `${target.scrollHeight}px`;
-  //       }
-  //       break;
-  //     default:
-  //       console.error("unknown target name");
-  //       break;
-  //   }
-  // };
-
-  // const textareaContentOnChangeHandler = (
-  //   e: ChangeEvent<HTMLTextAreaElement>
-  // ) => {
-  //   setInputContent(e.target.value);
-  //   handleTextareaSize(e);
-  //   console.log("inputContent", inputContent);
-  // };
-
-  // const textareaTitleOnChangeHandler = (
-  //   e: ChangeEvent<HTMLTextAreaElement>
-  // ) => {
-  //   setInputTitle(e.target.value);
-  //   handleTextareaSize(e);
-  // };
-
   const updateCardFromDiv = () => {
     if (
       divContentRef.current &&
@@ -91,10 +53,6 @@ function CardForm({
         setInputTitle(normalizedRefTitle);
 
         setInputContent(normalizedRefContent);
-
-        // formRef.current?.requestSubmit();
-        // divContentRef.current.textContent = "";
-        // divTitleRef.current.textContent = "";
       }
     }
     if (laterPin) {
@@ -104,35 +62,7 @@ function CardForm({
     setFocusOnForm(false);
     setLaterPin(false);
   };
-  // const updateCard = () => {
-  //   if (textAreaContentRef.current && textAreaTitleRef.current) {
-  //     const normalizedRefContent = textAreaContentRef.current.value
-  //       .trim()
-  //       .replace(/\r\n/g, "\n");
-  //     const normalizedRefTitle = textAreaTitleRef.current.value
-  //       .trim()
-  //       .replace(/\r\n/g, "\n");
-  //     console.log("normalizedPropContent ", content);
 
-  //     const normalizedPropContent = content.trim().replace(/\r\n/g, "\n");
-
-  //     const normalizedPropTitle = title.trim().replace(/\r\n/g, "\n");
-  //     if (
-  //       normalizedRefContent !== normalizedPropContent ||
-  //       normalizedRefTitle !== normalizedPropTitle
-  //     ) {
-  //       formRef.current?.requestSubmit();
-  //       textAreaContentRef.current.value = "";
-  //       textAreaTitleRef.current.value = "";
-  //     }
-  //   }
-  //   if (laterPin) {
-  //     pinned ? UnPinCardsAction(cardId) : PinCardsAction(cardId);
-  //     dispatch(laterDoPin(false));
-  //   }
-  //   setFocusOnForm(false);
-  //   setLaterPin(false);
-  // };
   const formMissedFoucs = () => {
     document.body.style.overflow = "auto";
     // updateCard();
@@ -147,6 +77,7 @@ function CardForm({
 
     setFocusOnForm(true);
   };
+
   const clickPinButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
@@ -166,29 +97,149 @@ function CardForm({
       }
     }
   };
+  const transformEffect = () => {
+    const ref = cardDisplayRef.current;
+    console.log(ref?.style.translate);
+
+    if (ref) {
+      console.log("ref?.style.width", ref?.style.width);
+
+      const [x, y] = [
+        ref.getBoundingClientRect().x,
+        ref.getBoundingClientRect().y,
+      ];
+      console.log("xy ", x, y);
+      console.log("inner ", window.innerWidth, window.innerHeight);
+
+      const [destinationX, destinationY] = [
+        window.innerWidth / 3,
+        window.innerHeight / 3,
+      ];
+      console.log("destinationXY ", destinationX, destinationY);
+      const [diffX, diffY] = [destinationX - x, destinationY - y];
+      setDestinationXY({ x: diffX, y: diffY });
+
+      // ref.style.translate = `${diffX}px ${diffY}px`;
+      // ref.style.width = "300px";
+      // ref.style.cssText = `translate: ${diffX}px ${diffY}px; width: 300px;`;
+
+      // setTranslateXY([diffX, diffY]);
+      console.log("diffXY ", diffX, diffY);
+      // const []
+    }
+  };
+  const transformBackEffect = () => {
+    const ref = cardDisplayRef.current;
+    setDestinationXY({ x: 0, y: 0 });
+  };
+
+  const [selectedId, setSelectedId] = useState<null | string>(null);
+  const [transform, setTransform] = useState(false);
+  // const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+  // const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
+  const [destinationXY, setDestinationXY] = useState({ x: 0, y: 0 });
+  const [initXY, setInitXY] = useState({ x: 0, y: 0 });
+  const [boundingRect, setBoundingRect] = useState({
+    x: 0,
+    y: 0,
+  });
+  const divClickHandler = () => {
+    // setTransform(!transform);
+    // const ref = cardDisplayRef.current;
+    // if (transform === false && ref) {
+    //   setdivWidth(ref.style.width);
+    // }
+    setTransform(!transform);
+    if (!transform) {
+      setInitXY({ x: 0, y: 0 });
+
+      transformEffect();
+    } else {
+      setInitXY({ x: destinationXY.x, y: destinationXY.y });
+    }
+  };
+  useEffect(() => {
+    if (transform) {
+    } else {
+      transformBackEffect();
+    }
+  }, [transform]);
+
   const SmallCard = () => {
     return (
-      <div
-        ref={cardDisplayRef}
-        id={Number(index).toString()}
-        className={`border-2 border-gray-400 break-all break-words	${
-          focusOnForm ? "invisible" : "visible"
-        }`}
-        onClick={() => viewCard()}
-      >
-        <button
-          className={displayPin ? "bg-yellow-500 z-50" : "bg-slate-600 z-50"}
-          onClick={(e) => {
-            clickPinButtonHandler(e);
+      <>
+        <motion.div
+          initial={{
+            x: initXY.x,
+            y: initXY.y,
+            position: "absolute",
+            height: 72,
           }}
+          animate={{ x: destinationXY.x, y: destinationXY.y }}
+          onClick={() => divClickHandler()}
         >
-          <div>Pin</div>
-        </button>
-        <pre className="overflow-x-auto whitespace-pre-wrap ">{inputTitle}</pre>
-        <pre className="overflow-x-auto whitespace-pre-wrap ">
-          {inputContent}
-        </pre>
-      </div>
+          <div
+            ref={cardDisplayRef}
+            style={{}}
+            className={`border-2 border-gray-400 break-all break-words w-32  h-32 
+          `}
+            // ${focusOnForm ? "invisible" : "visible"}
+          >
+            <button
+              className={
+                displayPin ? "bg-yellow-500 z-50" : "bg-slate-600 z-50"
+              }
+              onClick={(e) => {
+                clickPinButtonHandler(e);
+              }}
+            >
+              <div>Pin</div>
+            </button>
+
+            {transform ? (
+              <div onClick={(e)=>e.stopPropagation()}>
+                <label htmlFor="">
+                  Title
+                  <div
+                    className="hover:cursor-text resize"
+                    ref={divTitleRef}
+                    contentEditable
+                    defaultValue={inputTitle}
+                    autoFocus={focusOnForm}
+                    suppressContentEditableWarning
+                  >
+                    <pre>{inputTitle}</pre>
+                  </div>
+                </label>
+                <label htmlFor="">
+                  Content
+                  <div
+                    className="hover:cursor-text resize"
+                    ref={divContentRef}
+                    contentEditable
+                    defaultValue={inputContent}
+                   
+                    suppressContentEditableWarning
+                    autoFocus={transform}
+                  >
+                    <pre>{inputContent}</pre>
+                  </div>
+                </label>
+              </div>
+            ) : (
+              <>
+                {" "}
+                <pre className="overflow-x-auto whitespace-pre-wrap ">
+                  {inputTitle}
+                </pre>
+                <pre className="overflow-x-auto whitespace-pre-wrap ">
+                  {inputContent}
+                </pre>
+              </>
+            )}
+          </div>
+        </motion.div>
+      </>
     );
   };
   const LargeCard = () => {
@@ -215,30 +266,6 @@ function CardForm({
               className={`border-2 border-gray-400 break-all break-words`}
               hidden={!focusOnForm}
             >
-              {/* <label htmlFor="">
-                  Title
-                  <textarea
-                    className="resize-none overflow-hidden"
-                    ref={textAreaTitleRef}
-                    defaultValue={inputTitle}
-                    onBlur={(e) => textareaTitleOnChangeHandler(e)}
-                    onChange={(e) => textareaTitleOnChangeHandler(e)}
-                    name="title"
-                  />
-                </label> */}
-              {/* <label htmlFor="">
-                  Content
-                  <textarea
-                    key={"random1"}
-                    className="resize-none"
-                    ref={textAreaContentRef}
-                    // defaultValue={content}
-                    name="content"
-                    defaultValue={inputContent}
-                    onBlur={(e) => textareaContentOnChangeHandler(e)}
-                    // autoFocus={focusOnForm}
-                  />
-                </label> */}
               <label htmlFor="">
                 Title
                 <div
@@ -285,8 +312,11 @@ function CardForm({
   };
   return (
     <main className="w-full">
-      <LargeCard />
+      {/* <LargeCard />
+       */}
       <SmallCard />
+
+      <div className="border-black border-2 h-32 w-32"></div>
     </main>
   );
 }
