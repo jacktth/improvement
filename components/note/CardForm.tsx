@@ -4,7 +4,13 @@ import {
   unPinCardsAction,
   updateCardsAction,
 } from "@/app/note/action";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { laterDoPin } from "@/app/note/noteSlice";
 import { AnimatePresence, motion } from "framer-motion";
@@ -66,6 +72,7 @@ function CardForm({
   const formMissedFoucs = () => {
     document.body.style.overflow = "auto";
     // updateCard();
+    setTransform(!transform);
     updateCardFromDiv();
   };
   const clickSubmitButtonHandler = () => {
@@ -97,6 +104,28 @@ function CardForm({
       }
     }
   };
+
+  const [transform, setTransform] = useState(false);
+  const [transformXY, setTransformXY] = useState<any>({ x: 0, y: 0 });
+  const [initXY, setInitXY] = useState<any>({ x: 0, y: 0 });
+
+  const [animateWidth, setAnimateWidth] = useState<number>(100);
+  const [initAnimateWidth, setInitAnimateWidth] = useState<number>(100);
+  const [diffTransformFromResize, setDiffTransformFromResize] = useState({
+    x: 0,
+    y: 0,
+  });
+
+  const divClickHandler = () => {
+    setTransform(!transform);
+    if (!transform) {
+      setInitXY({ x: 0, y: 0 });
+      setInitAnimateWidth(50);
+    } else {
+      setInitXY({ x: transformXY.x, y: transformXY.y });
+      setInitAnimateWidth(animateWidth);
+    }
+  };
   const transformEffect = () => {
     const ref = cardDisplayRef.current;
     console.log(ref?.style.translate);
@@ -117,71 +146,135 @@ function CardForm({
       ];
       console.log("destinationXY ", destinationX, destinationY);
       const [diffX, diffY] = [destinationX - x, destinationY - y];
-      setDestinationXY({ x: diffX, y: diffY });
+      setTransformXY({ x: diffX, y: diffY });
 
-      // ref.style.translate = `${diffX}px ${diffY}px`;
-      // ref.style.width = "300px";
-      // ref.style.cssText = `translate: ${diffX}px ${diffY}px; width: 300px;`;
+      const targetWidth = window.innerWidth / 3;
+      setAnimateWidth(targetWidth);
 
-      // setTranslateXY([diffX, diffY]);
       console.log("diffXY ", diffX, diffY);
-      // const []
     }
   };
   const transformBackEffect = () => {
-    const ref = cardDisplayRef.current;
-    setDestinationXY({ x: 0, y: 0 });
-  };
-
-  const [selectedId, setSelectedId] = useState<null | string>(null);
-  const [transform, setTransform] = useState(false);
-  // const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-  // const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
-  const [destinationXY, setDestinationXY] = useState({ x: 0, y: 0 });
-  const [initXY, setInitXY] = useState({ x: 0, y: 0 });
-  const [boundingRect, setBoundingRect] = useState({
-    x: 0,
-    y: 0,
-  });
-  const divClickHandler = () => {
-    // setTransform(!transform);
-    // const ref = cardDisplayRef.current;
-    // if (transform === false && ref) {
-    //   setdivWidth(ref.style.width);
-    // }
-    setTransform(!transform);
-    if (!transform) {
-      setInitXY({ x: 0, y: 0 });
-
-      transformEffect();
-    } else {
-      setInitXY({ x: destinationXY.x, y: destinationXY.y });
-    }
+    setTransformXY({ x: 0, y: 0 });
+    setAnimateWidth(50);
+    setDiffTransformFromResize({ x: 0, y: 0 });
   };
   useEffect(() => {
     if (transform) {
+      transformEffect();
     } else {
       transformBackEffect();
     }
   }, [transform]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (
+        transform === true &&
+        initXY.x === transformXY.x &&
+        animateWidth === initAnimateWidth
+      ) {
+        const ref = cardDisplayRef.current;
+        console.log(ref?.style.translate);
+
+        if (ref) {
+          console.log("ref?.style.width", ref?.style.width);
+
+          const [x, y] = [
+            ref.getBoundingClientRect().x,
+            ref.getBoundingClientRect().y,
+          ];
+          console.log("xy ", x, y);
+          console.log("inner ", window.innerWidth, window.innerHeight);
+
+          const [destinationX, destinationY] = [
+            window.innerWidth / 3,
+            window.innerHeight / 3,
+          ];
+          console.log("destinationXY ", destinationX, destinationY);
+          //add diffTransformFromResize is to add the diff value after previoud resize
+          //this can prevent the incorrect resize
+          const [diffX, diffY] = [
+            destinationX - x + diffTransformFromResize.x,
+            destinationY - y + diffTransformFromResize.x,
+          ];
+          setDiffTransformFromResize({ x: diffX, y: diffY });
+          const targetWidth = window.innerWidth / 3;
+          setAnimateWidth(targetWidth);
+          setInitAnimateWidth(targetWidth);
+
+          console.log("diffXY ", diffX, diffY);
+          console.log("finished", " normal resizing");
+        }
+      } else if (
+        transform === true &&
+        initXY.x !== transformXY.x &&
+        animateWidth !== initAnimateWidth
+      ) {
+        const ref = cardDisplayRef.current;
+        console.log(ref?.style.translate);
+
+        if (ref) {
+          console.log("ref?.style.width", ref?.style.width);
+
+          const [x, y] = [
+            ref.getBoundingClientRect().x,
+            ref.getBoundingClientRect().y,
+          ];
+          console.log("xy ", x, y);
+          console.log("inner ", window.innerWidth, window.innerHeight);
+
+          const [destinationX, destinationY] = [
+            window.innerWidth / 3,
+            window.innerHeight / 3,
+          ];
+          console.log("destinationXY ", destinationX, destinationY);
+          const [diffX, diffY] = [destinationX - x, destinationY - y];
+          console.log("diffXY in resize init", diffX, diffY);
+
+          setInitXY({ x: transformXY.x, y: transformXY.y });
+          setDiffTransformFromResize({ x: diffX, y: diffX });
+          const targetWidth = window.innerWidth / 3;
+          setAnimateWidth(targetWidth);
+          setInitAnimateWidth(targetWidth);
+
+          console.log("diffXY ", diffX, diffY);
+          console.log("finished", " init resizing");
+        }
+      }
+
+      // console.log("res");
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
 
   const SmallCard = () => {
     return (
       <>
         <motion.div
           initial={{
-            x: initXY.x,
+            x: initXY.x + diffTransformFromResize.x,
             y: initXY.y,
+            width: initAnimateWidth,
             position: "absolute",
-            height: 72,
           }}
-          animate={{ x: destinationXY.x, y: destinationXY.y }}
+          animate={{
+            x: transformXY.x + diffTransformFromResize.x,
+            y: transformXY.y,
+            width: animateWidth,
+          }}
           onClick={() => divClickHandler()}
+          transition={{ duration: 1 }}
         >
           <div
             ref={cardDisplayRef}
             style={{}}
-            className={`border-2 border-gray-400 break-all break-words w-32  h-32 
+            className={`border-2 border-gray-400 break-all break-words  h-32 
           `}
             // ${focusOnForm ? "invisible" : "visible"}
           >
@@ -197,7 +290,7 @@ function CardForm({
             </button>
 
             {transform ? (
-              <div onClick={(e)=>e.stopPropagation()}>
+              <div onClick={(e) => e.stopPropagation()}>
                 <label htmlFor="">
                   Title
                   <div
@@ -205,7 +298,6 @@ function CardForm({
                     ref={divTitleRef}
                     contentEditable
                     defaultValue={inputTitle}
-                    autoFocus={focusOnForm}
                     suppressContentEditableWarning
                   >
                     <pre>{inputTitle}</pre>
@@ -218,9 +310,7 @@ function CardForm({
                     ref={divContentRef}
                     contentEditable
                     defaultValue={inputContent}
-                   
                     suppressContentEditableWarning
-                    autoFocus={transform}
                   >
                     <pre>{inputContent}</pre>
                   </div>
@@ -239,6 +329,16 @@ function CardForm({
             )}
           </div>
         </motion.div>
+
+        {/* {transform && (
+          <AnimatePresence>
+            {transform && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <LargeCard />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )} */}
       </>
     );
   };
@@ -246,8 +346,11 @@ function CardForm({
     return (
       <div
         onClick={() => formMissedFoucs()}
-        hidden={!focusOnForm}
-        className="fixed h-screen w-screen  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        hidden={!transform}
+        className="fixed h-screen w-screen  top-1/2 left-1/2 
+        transform -translate-x-1/2 -translate-y-1/2
+        bg-slate-500/80
+        "
       >
         <div
           onClick={(e) => e.stopPropagation()}
@@ -264,7 +367,7 @@ function CardForm({
           <form ref={formRef} key={index}>
             <div
               className={`border-2 border-gray-400 break-all break-words`}
-              hidden={!focusOnForm}
+              hidden={!transform}
             >
               <label htmlFor="">
                 Title
@@ -286,9 +389,6 @@ function CardForm({
                   ref={divContentRef}
                   contentEditable
                   defaultValue={inputContent}
-                  onClick={() => {
-                    setFocusOnForm(true);
-                  }}
                   suppressContentEditableWarning
                   autoFocus={focusOnForm}
                 >
@@ -311,7 +411,7 @@ function CardForm({
     );
   };
   return (
-    <main className="w-full">
+    <main className="w-32">
       {/* <LargeCard />
        */}
       <SmallCard />
