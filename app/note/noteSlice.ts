@@ -9,6 +9,7 @@ export interface NoteState {
   textSearchedCards: ICardAfterParsed[]
   laterDoPin: boolean
   changePin: boolean
+  listView:boolean
 
 }
 
@@ -16,7 +17,9 @@ const initialState: NoteState = {
   value: 0,
   textSearchedCards:[],
   laterDoPin: false,
-  changePin: false
+  changePin: false,
+  listView:true
+
 
 }
 
@@ -40,10 +43,13 @@ export const noteSlice = createSlice({
     doPin: (state, action: PayloadAction<boolean>) => {
       state.laterDoPin = action.payload
     },
+    changeListViewTo: (state, action: PayloadAction<boolean>) => {
+      state.listView = action.payload
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { increment, addSearchedCard, laterDoPin ,doPin} = noteSlice.actions
+export const { increment, addSearchedCard, laterDoPin ,doPin,changeListViewTo} = noteSlice.actions
 const counterReducer = noteSlice.reducer
 export default counterReducer

@@ -42,7 +42,7 @@ function CardForm({
     x: 0,
     y: 0,
   });
-  const updateCardFromDiv = () => {
+  const updateCard = () => {
     if (
       divContentRef.current &&
       divTitleRef.current &&
@@ -83,12 +83,12 @@ function CardForm({
     setFocusOnForm(true);
 
     triggerTransformAnimation();
-    updateCardFromDiv();
+    updateCard();
     console.log("exit viewing");
   };
   const clickSubmitButtonHandler = () => {
     // updateCard();
-    updateCardFromDiv();
+    updateCard();
   };
   const enterViewCard = () => {
     if (!focusOnForm) {

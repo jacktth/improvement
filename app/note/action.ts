@@ -99,7 +99,7 @@ export async function updateCardsAction(cardId: string,title:string, content:str
     { title:title, content: content,editedDate:now }
   );
   console.log(res);
-  revalidatePath("/note");
+  // revalidatePath("/note");
 
   return res;
 }
@@ -122,7 +122,7 @@ export async function unPinCardsAction(cardId: string) {
   revalidatePath("/note");
 }
 
-export async function searchCardsWithInputTextACtion(searchText:string) {
+export async function searchCardsWithInputTextAction(searchText:string) {
   await mongodbClient();
   // const text = formData.get("text")?.toString();
   const text = searchText

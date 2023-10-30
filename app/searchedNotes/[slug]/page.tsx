@@ -1,9 +1,9 @@
+import { searchCardsWithInputTextAction } from "@/app/note/action";
 import CardForm from "@/components/note/CardForm";
 import { ICardAfterParsed } from "@/models/Card";
-import { searchCardsWithInputTextACtion } from "../../note/action";
 
 export default async function SearchedCardsPage({ params }: { params: { slug: string } }) {
-        const res = await searchCardsWithInputTextACtion(params.slug);
+        const res = await searchCardsWithInputTextAction(params.slug);
         const parsedObjectRes = Object.values<ICardAfterParsed>(
           JSON.parse(JSON.stringify(await res))
         );

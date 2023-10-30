@@ -1,6 +1,6 @@
 import CardsGallery from "@/components/note/CardsGallery";
 import { ClassifiedCard, getCardsAction } from "./action";
-import SearchBar from "@/components/note/SearchBar";
+import SearchBar from "@/components/topBar/SearchBar";
 import { Provider } from "react-redux";
 import { store } from "../store";
 import AddCardBar from "@/components/note/AddCardBar";
