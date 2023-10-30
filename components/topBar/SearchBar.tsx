@@ -33,7 +33,7 @@ function SearchBar() {
             type="submit"
           >
             <SearchIcon
-              className={`m-2 ${clickInput ? "text-black" : "text-drakIcon"}`}
+              className={`m-2 ${clickInput ? "text-black" : "text-darkTopIconAndText"}`}
               sx={{ fontSize: 30 }}
             />
           </button>
@@ -59,7 +59,7 @@ function SearchBar() {
             onClick={() => clearButtonHandler()}
           >
             <ClearIcon
-              className={`m-2 ${clickInput ? "text-black" : "text-drakIcon"} `}
+              className={`m-2 ${clickInput ? "text-black" : "text-darkTopIconAndText"} `}
               sx={{ fontSize: 30 }}
             />
           </button>

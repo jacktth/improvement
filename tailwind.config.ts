@@ -16,8 +16,11 @@ const config: Config = {
       colors:{
         'darkbg':'#202124',
         'darkSearchBar':'#525355',
-        'darkIcon':'#EAEAEB',
-        'darkHoverCircle':'#353638'
+        'darkTopIconAndText':'#EAEAEB',
+        'darkLeftBarIcon':'#9AA0A6',
+        'darkLeftBarText':'#E8EAED',
+        'darkHoverCircle':'#353638',
+        'darkFocusOption':'#41331C',
       }
     },
   

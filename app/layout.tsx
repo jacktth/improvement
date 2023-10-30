@@ -6,6 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import SearchBar from "@/components/topBar/SearchBar";
 import SettingTools from "@/components/topBar/SettingTools";
+import LeftBar from "@/components/leftBar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -31,7 +32,7 @@ export default function RootLayout({
               
               <a href="http://" className="my-auto text-center">
                 <NoteAltIcon sx={{ color: "orange",fontSize: 50 }}/>
-                <span className="inline-block align-middle text-gray-200 text-2xl">
+                <span className="inline-block align-middle text-gray-200 text-3xl">
                   My Note
                 </span>
               </a>
@@ -48,8 +49,8 @@ export default function RootLayout({
               <SettingTools/></div>
           </div>
           <div className="flex fixed top-20 w-screen">
-            <div className="w-44  h-screen text-white">left bar</div>
-            <div className="w-full">{children}</div>
+            <div className=" h-screen text-white w-1/6 pt-3"><LeftBar/></div>
+            <div className="w-5/6">{children}</div>
           </div>
         </ReduxProvider>
       </body>
