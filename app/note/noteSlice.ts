@@ -11,7 +11,9 @@ export interface NoteState {
   changePin: boolean
   listView:boolean
 
+
 }
+
 
 const initialState: NoteState = {
   value: 0,

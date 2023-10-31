@@ -38,10 +38,10 @@ function SearchBar() {
             />
           </button>
           <input
-            className={` w-30 outline-none grow ${
+            className={` w-30 outline-none text-2xl grow ${
               clickInput
                 ? "bg-white caret-black text-black"
-                : "bg-darkSearchBar caret-white"
+                : "bg-darkSearchBar caret-white text-white"
             }`}
             title="Search"
             name="text"
