@@ -20,7 +20,7 @@ function LeftBar() {
   return (
     <>
       <div className="">
-        <Link href="">
+        <Link href="/note">
           {" "}
           <OptionItem
             children={<LightbulbOutlinedIcon sx={{ fontSize: 30 }} />}
@@ -29,7 +29,7 @@ function LeftBar() {
             setOptionSelected={setOptionSelected}
           />
         </Link>
-        <Link href="">
+        <Link href="/note">
           {" "}
           <OptionItem
             children={<NotificationsNoneOutlinedIcon sx={{ fontSize: 30 }} />}
@@ -38,7 +38,7 @@ function LeftBar() {
             setOptionSelected={setOptionSelected}
           />
         </Link>
-        <Link href="">
+        <Link href="/note">
           {" "}
           <OptionItem
             children={<EditOutlinedIcon sx={{ fontSize: 30 }} />}
@@ -47,7 +47,7 @@ function LeftBar() {
             setOptionSelected={setOptionSelected}
           />
         </Link>
-        <Link href="">
+        <Link href="/note">
           {" "}
           <OptionItem
             children={<ArchiveOutlinedIcon sx={{ fontSize: 30 }} />}
@@ -56,7 +56,7 @@ function LeftBar() {
             setOptionSelected={setOptionSelected}
           />
         </Link>
-        <Link href="">
+        <Link href="/note">
           {" "}
           <OptionItem
             children={<DeleteOutlineSharpIcon sx={{ fontSize: 30 }} />}

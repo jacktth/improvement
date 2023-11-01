@@ -93,6 +93,7 @@ export async function getCardsAction(): Promise<ClassifiedCard> {
 export async function updateCardsAction(cardId: string,title:string, content:string,) {
   await mongodbClient();
   const now = new Date();
+  console.log(now);
   
   const res = await Card.updateOne<ICard>(
     { _id: cardId },

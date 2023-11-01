@@ -1,16 +1,17 @@
 "use client";
 import { addCardAction } from "@/app/note/action";
 import { ChangeEvent, useRef, useState } from "react";
-
+import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
+import PushPinIcon from "@mui/icons-material/PushPin";
 function AddCardBar() {
   const [focusOnForm, setFocusOnForm] = useState(false);
   const [pin, setPin] = useState(false);
-  const textAreaContentRef = useRef<HTMLTextAreaElement>(null);
+  const textAreaContentRef = useRef<HTMLInputElement>(null);
   const textAreaTitleRef = useRef<HTMLTextAreaElement>(null);
   const divTitleRef = useRef<HTMLDivElement>(null);
   const divContentRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const handleTextareaSize = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTextareaSize = (e: ChangeEvent) => {
     const target = e.target as HTMLTextAreaElement;
     switch (target.name) {
       case "content":
@@ -29,17 +30,13 @@ function AddCardBar() {
     }
   };
 
-  const textareaOnChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const textareaOnChangeHandler = (e: ChangeEvent) => {
     handleTextareaSize(e);
   };
   const addCardByDiv = () => {
     console.log("addCardByDiv");
-    
-    if (
-      divContentRef.current &&
-      divTitleRef.current 
- 
-    ) {
+
+    if (divContentRef.current && divTitleRef.current) {
       if (
         divTitleRef.current.innerText !== "" ||
         divContentRef.current.innerText !== ""
@@ -57,36 +54,9 @@ function AddCardBar() {
         divContentRef.current.textContent = "";
         setPin(false);
       }
-     
     }
     setFocusOnForm(false);
     setPin(false);
-  };
-  // const addCard = () => {
-  //   if (
-  //     textAreaContentRef.current &&
-  //     textAreaTitleRef.current &&
-  //     formRef.current
-  //   ) {
-  //     if (
-  //       textAreaContentRef.current.value !== "" ||
-  //       textAreaTitleRef.current.value !== ""
-  //     ) {
-  //       console.log("addCard");
-
-  //       const formData = new FormData(formRef.current);
-  //       const addCardWithBinding = addCardAction.bind(null, pin, formData);
-  //       addCardWithBinding();
-  //       textAreaContentRef.current.value = "";
-  //       textAreaTitleRef.current.value = "";
-  //       setPin(false);
-  //     }
-  //     setFocusOnForm(false);
-  //     setPin(false);
-  //   }
-  // };
-  const formMissedFoucs = () => {
-    addCardByDiv();
   };
 
   const clickSubmitButtonHandler = () => {
@@ -94,110 +64,93 @@ function AddCardBar() {
   };
   const invisbleLayerCss = () => {
     if (focusOnForm) {
-      return ` z-[60] bg-gray-100/25 fixed  h-screen w-screen  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2`;
+      return ` z-10 fixed  
+      h-screen w-screen  top-1/2 left-1/2 
+      transform -translate-x-1/2 -translate-y-1/2`;
     } else {
       return ``;
     }
   };
   return (
-    <div>
-      <div className="flex justify-center">
-        <div
-          onClick={() => formMissedFoucs()}
-          className={invisbleLayerCss()}
-        ></div>
-
-        <form
-          className="z-[70]"
-          onClick={(e) => e.stopPropagation()}
-          ref={formRef}
-          // action={addCardByDiv}
-        >
-          {focusOnForm ? (
-            <div className="">
-              {/* <label htmlFor="">
-                Title
-                <textarea
-                  className="resize-none overflow-hidden"
-                  ref={textAreaTitleRef}
-                  name="title"
-                />
-              </label>
-              <label htmlFor="">
-                Content
-                <textarea
-                  className="resize-none"
-                  ref={textAreaContentRef}
-                  name="content"
-                  onClick={() => {
-                    setFocusOnForm(true);
-                  }}
-                  onChange={(e) => textareaOnChangeHandler(e)}
-                  autoFocus={focusOnForm}
-                  placeholder="Take a note..."
-                />
-              </label> */}
-              <label htmlFor="">
-                Title
-                <div
-                  className="hover:cursor-text"
-                  ref={divTitleRef}
-                  contentEditable
-                  defaultValue={""}
-                  autoFocus={focusOnForm}
-                  suppressContentEditableWarning
-                ></div>
-              </label>
-              <label htmlFor="">
-                Content
-                <div
-                  className="hover:cursor-text"
-                  ref={divContentRef}
-                  contentEditable
-                  defaultValue={"inputContent"}
-                  onClick={() => {
-                    setFocusOnForm(true);
-                  }}
-                  suppressContentEditableWarning
-                  autoFocus={focusOnForm}
-                ></div>
-              </label>
-              <button
-                //Dont change to submit, casuing error
-                type="button"
-                onClick={() => clickSubmitButtonHandler()}
-              >
-                Close
-              </button>
-              <div className={pin ? "bg-yellow-500" : "bg-slate-600"}>
+    <div
+      className="mt-3 h-auto min-h-full w-2/3 noteBoarder bg-darkbg 
+      rounded-xl cursor-text shadow-black shadow-md
+      "
+    >
+      <div
+        className={focusOnForm ? invisbleLayerCss() : ""}
+        onClick={(e) => {
+          addCardByDiv();
+        }}
+      ></div>
+      <form
+        className="z-20 inline-block p-4 h-full w-full  relative content-center 
+        rounded-xl bg-darkbg"
+        onClick={(e) => {
+          e.stopPropagation();
+          setFocusOnForm(true);
+        }}
+        ref={formRef}
+        // action={addCardByDiv}
+      >
+        {focusOnForm ? (
+          <div className="h-full">
+            <div className="flex">
+              <div
+                className="editableDiv
+           empty:before:content-[attr(title-placeholder)] 
+           empty:before:text-darkPlaceHolder"
+                ref={divTitleRef}
+                contentEditable
+                title-placeholder="Tilte"
+                autoFocus={focusOnForm}
+                suppressContentEditableWarning
+              ></div>
+              <div>
                 <button type="button" onClick={() => setPin(!pin)}>
                   {" "}
-                  Pin
+                  {pin ? (
+                    <PushPinIcon className="text-white" />
+                  ) : (
+                    <PushPinOutlinedIcon className="text-darkInactiveIcon" />
+                  )}
                 </button>
               </div>
             </div>
-          ) : (
-            <>
-              {" "}
-              <label htmlFor="">
-                Content
-                <textarea
-                  key={"random1"}
-                  className="resize-none"
-                  ref={textAreaContentRef}
-                  name="content"
-                  onClick={() => {
-                    setFocusOnForm(true);
-                  }}
-                  placeholder="Take a note..."
-                  onChange={(e) => textareaOnChangeHandler(e)}
-                  autoFocus={focusOnForm}
-                />
-              </label>
-            </>
-          )}
-        </form>
-      </div>
+
+            <div
+              className="editableDiv
+              empty:before:content-[attr(contnet-placeholder)] 
+              empty:before:text-darkPlaceHolder"
+              ref={divContentRef}
+              contentEditable
+              contnet-placeholder="Take a note..."
+              onClick={() => {
+                setFocusOnForm(true);
+              }}
+              suppressContentEditableWarning
+              autoFocus={focusOnForm}
+            ></div>
+            <button
+            className="text-darkActiveText"
+              //Dont change to submit, casuing error
+              type="button"
+              onClick={() => clickSubmitButtonHandler()}
+            >
+              Close
+            </button>
+          </div>
+        ) : (
+          <>
+            {" "}
+            <input
+              className="  font-bold text-autoMax resize-none  
+               bg-darkbg"
+              placeholder="Take a note..."
+            />
+          </>
+        )}
+      </form>
     </div>
   );
 }

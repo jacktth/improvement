@@ -16,11 +16,15 @@ const config: Config = {
       colors:{
         'darkbg':'#202124',
         'darkSearchBar':'#525355',
-        'darkTopIconAndText':'#EAEAEB',
-        'darkLeftBarIcon':'#9AA0A6',
+        'darkActiveText':'#EAEAEB',
+        'darkInactiveIcon':'#9AA0A6',
         'darkLeftBarText':'#E8EAED',
         'darkHoverCircle':'#353638',
         'darkFocusOption':'#41331C',
+        'darkPlaceHolder':'#B6B6B7',
+      },
+      fontSize: {
+        'autoMax': 'clamp(16px, 1vw, 32px)' // Define the range of font sizes using clamp()
       }
     },
   

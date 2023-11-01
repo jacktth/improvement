@@ -26,3 +26,16 @@ body {
     rgb(var(--background-start-rgb));
 } */
 
+@layer components {
+  .editableDiv {
+ @apply hover:cursor-text  text-white outline-none whitespace-pre-wrap 
+   
+  }
+  .noteBoarder {
+    @apply border-[1px] border-gray-400
+     }
+     .icon-hover {
+      @apply rounded-full hover:bg-darkHoverCircle
+       }
+
+}

@@ -11,8 +11,9 @@ export default async function Card() {
   );
   return (
     <div>
-
-      <AddCardBar></AddCardBar>
+      <div className="flex w-full justify-center">
+        <AddCardBar></AddCardBar>
+      </div>
 
       <CardsGallery {...classifiedCards}></CardsGallery>
     </div>

@@ -25,7 +25,7 @@ function OptionItem({
       onClick={clickHandler}
     >
       <div className="flex">
-        <div className="text-darkLeftBarIcon">
+        <div className="text-darkInactiveIcon">
           {children ? children : <></>}
         </div>
         <span className="ml-10 text-lg text-darkLeftBarText">{title}</span>

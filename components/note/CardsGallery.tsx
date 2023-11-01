@@ -12,56 +12,62 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
     (state: RootState) => state.note.textSearchedCards
   );
   const displayedCards = searchedCard.length > 0 ? searchedCard : noPinnedCards;
-  
-  const NormalDisplayedCards = ()=>{
+
+  const NormalDisplayedCards = () => {
     return (
       <>
-        pinned cards
         {PinnedCards.length > 0 ? (
-          <div className="grid grid-cols-4 gap-4">
-            {PinnedCards.map((cardInfo: ICardAfterParsed, i) => (
-              <div key={cardInfo._id}>
-                <CardForm
-                  content={cardInfo.content}
-                  title={cardInfo.title}
-                  cardId={cardInfo._id}
-                  index={i}
-                  pinned={cardInfo.pinned}
-                  editedDate={cardInfo.editedDate.toString()}
-                />
-              </div>
-            ))}
+          <div className="mb-10">
+            <span className="text-darkInactiveIcon">PINNED</span>
+
+            <div className="grid grid-cols-4 gap-1 ">
+              {PinnedCards.map((cardInfo: ICardAfterParsed, i) => (
+                <div key={cardInfo._id}>
+                  <CardForm
+                    content={cardInfo.content}
+                    title={cardInfo.title}
+                    cardId={cardInfo._id}
+                    index={i}
+                    pinned={cardInfo.pinned}
+                    editedDate={cardInfo.editedDate.toString()}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         ) : (
           <></>
         )}
-        nopinned cards
-        <div className="grid grid-cols-4 gap-4">
-          {noPinnedCards ? (
-            displayedCards.map((cardInfo: ICardAfterParsed, i) => (
-              <div key={cardInfo._id}>
-                <CardForm
-                  content={cardInfo.content}
-                  title={cardInfo.title}
-                  cardId={cardInfo._id}
-                  index={i}
-                  pinned={cardInfo.pinned}
-                  editedDate={cardInfo.editedDate.toString()}
-                />
-              </div>
-            ))
-          ) : (
-            <></>
-          )}
+
+
+        <div>
+          <span className="text-darkInactiveIcon">OTHERS</span>
+          <div className="grid grid-cols-4 gap-4">
+            {noPinnedCards ? (
+              displayedCards.map((cardInfo: ICardAfterParsed, i) => (
+                <div key={cardInfo._id}>
+                  <CardForm
+                    content={cardInfo.content}
+                    title={cardInfo.title}
+                    cardId={cardInfo._id}
+                    index={i}
+                    pinned={cardInfo.pinned}
+                    editedDate={cardInfo.editedDate.toString()}
+                  />
+                </div>
+              ))
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </>
     );
-  }
+  };
   return (
-   <>
-
-<NormalDisplayedCards/>
-   </>
+    <>
+      <NormalDisplayedCards />
+    </>
   );
 }
 
