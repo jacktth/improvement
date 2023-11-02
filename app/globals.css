@@ -32,7 +32,7 @@ body {
    
   }
   .noteBoarder {
-    @apply border-[1px] border-gray-400
+    @apply border-[1px] border-gray-400 rounded-lg
      }
      .icon-hover {
       @apply rounded-full hover:bg-darkHoverCircle

@@ -84,7 +84,7 @@ function AddCardBar() {
         }}
       ></div>
       <form
-        className="z-20 inline-block p-4 h-full w-full  relative content-center 
+        className="z-10 inline-block p-4 h-full w-full  relative content-center 
         rounded-xl bg-darkbg"
         onClick={(e) => {
           e.stopPropagation();
@@ -97,7 +97,7 @@ function AddCardBar() {
           <div className="h-full">
             <div className="flex">
               <div
-                className="editableDiv
+                className="editableDiv w-full
            empty:before:content-[attr(title-placeholder)] 
            empty:before:text-darkPlaceHolder"
                 ref={divTitleRef}
@@ -144,7 +144,7 @@ function AddCardBar() {
           <>
             {" "}
             <input
-              className="  font-bold text-autoMax resize-none  
+              className="  font-bold text-autoMax resize-none  outline-none
                bg-darkbg"
               placeholder="Take a note..."
             />
