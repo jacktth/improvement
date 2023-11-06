@@ -28,14 +28,15 @@ body {
 
 @layer components {
   .editableDiv {
- @apply hover:cursor-text  text-white outline-none whitespace-pre-wrap 
-   
+    @apply hover:cursor-text  text-white outline-none whitespace-pre-wrap;
   }
   .noteBoarder {
-    @apply border-[1px] border-gray-400 rounded-lg
-     }
-     .icon-hover {
-      @apply rounded-full hover:bg-darkHoverCircle
-       }
-
+    @apply border-[1px] border-gray-400 rounded-lg;
+  }
+  .icon-hover {
+    @apply border-8 border-transparent rounded-full hover:bg-darkHoverCircle hover:border-darkHoverCircle;
+  }
+  .icon-position {
+    @apply absolute right-3 top-3
+  }
 }
