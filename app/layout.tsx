@@ -4,9 +4,9 @@ import "./globals.css";
 import ReduxProvider from "@/components/redux/RedduxProvider";
 import MenuIcon from "@mui/icons-material/Menu";
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
-import SearchBar from "@/components/topBar/SearchBar";
-import SettingTools from "@/components/topBar/SettingTools";
-import LeftBar from "@/components/leftBar";
+import SearchBar from "@/components/appLayout/topBar/SearchBar";
+import SettingTools from "@/components/appLayout/topBar/SettingTools";
+import LeftBar from "@/components/appLayout/leftBar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
