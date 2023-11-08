@@ -23,47 +23,52 @@ function LeftBar() {
         <Link href="/note">
           {" "}
           <OptionItem
-            children={<LightbulbOutlinedIcon sx={{ fontSize: 30 }} />}
             title={"Notes"}
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
-          />
+          >
+            <LightbulbOutlinedIcon sx={{ fontSize: 30 }} />
+          </OptionItem>
         </Link>
         <Link href="/note">
           {" "}
           <OptionItem
-            children={<NotificationsNoneOutlinedIcon sx={{ fontSize: 30 }} />}
             title={"Reminders"}
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
-          />
+          >
+            <NotificationsNoneOutlinedIcon sx={{ fontSize: 30 }} />
+          </OptionItem>
         </Link>
         <Link href="/note">
           {" "}
           <OptionItem
-            children={<EditOutlinedIcon sx={{ fontSize: 30 }} />}
             title={"Edit labels"}
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
-          />
+          >
+            <EditOutlinedIcon sx={{ fontSize: 30 }} />
+          </OptionItem>
         </Link>
         <Link href="/note">
           {" "}
           <OptionItem
-            children={<ArchiveOutlinedIcon sx={{ fontSize: 30 }} />}
             title={"Archive"}
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
-          />
+          >
+            <ArchiveOutlinedIcon sx={{ fontSize: 30 }} />
+          </OptionItem>
         </Link>
         <Link href="/note">
           {" "}
           <OptionItem
-            children={<DeleteOutlineSharpIcon sx={{ fontSize: 30 }} />}
             title={"Trash"}
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
-          />
+          >
+            <DeleteOutlineSharpIcon sx={{ fontSize: 30 }} />
+          </OptionItem>
         </Link>
       </div>
     </>

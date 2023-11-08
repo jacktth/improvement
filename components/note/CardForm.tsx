@@ -215,9 +215,7 @@ function CardForm({
       window.removeEventListener("resize", handleResize);
     };
   });
-  useEffect(() => {
-    console.log("title:title", title.length);
-  }, []);
+
   const mouseInHandler = () => {
     if (transform) {
     } else if (noDiffBetweenInItAndActual === false) {

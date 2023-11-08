@@ -1,8 +1,8 @@
 "use client";
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { Dispatch, ReactElement, ReactNode, SetStateAction, useState } from "react";
 import { OptionWordType } from ".";
 type OptionProps = {
-  children: ReactNode;
+  children?:  React.ReactNode;
   title: OptionWordType;
   selectingOption: String;
   setOptionSelected: Dispatch<SetStateAction<OptionWordType>>;
