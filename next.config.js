@@ -5,8 +5,7 @@ const nextConfig = {
         serverActions: true,
     },
     exportPathMap:async function (
-        defaultPathMap,
-        { dev, dir, outDir, distDir, buildId }
+
       ) {
         return {
           '/': { page: '/note' },
