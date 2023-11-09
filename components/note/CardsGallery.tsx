@@ -110,10 +110,7 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
   const SearchedNotes = () => {
     return (
       <>
-        <>
-          {" "}
-          <div className="text-slate-50">dsadadasdadsadasdasdadasss</div>
-        </>
+      
         <div className="grid grid-cols-4 gap-4 ">
           {searchedCard.map((cardInfo: ICardAfterParsed, i) => (
             <div key={cardInfo._id}>
