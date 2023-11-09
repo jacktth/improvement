@@ -27,7 +27,7 @@ function LeftBar() {
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
           >
-            <LightbulbOutlinedIcon sx={{ fontSize: 30 }} />
+            <LightbulbOutlinedIcon className="menu-icon" />
           </OptionItem>
         </Link>
         <Link href="/note">
@@ -37,7 +37,7 @@ function LeftBar() {
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
           >
-            <NotificationsNoneOutlinedIcon sx={{ fontSize: 30 }} />
+            <NotificationsNoneOutlinedIcon className="menu-icon" />
           </OptionItem>
         </Link>
         <Link href="/note">
@@ -47,7 +47,7 @@ function LeftBar() {
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
           >
-            <EditOutlinedIcon sx={{ fontSize: 30 }} />
+            <EditOutlinedIcon className="menu-icon" />
           </OptionItem>
         </Link>
         <Link href="/note">
@@ -57,7 +57,7 @@ function LeftBar() {
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
           >
-            <ArchiveOutlinedIcon sx={{ fontSize: 30 }} />
+            <ArchiveOutlinedIcon className="menu-icon" />
           </OptionItem>
         </Link>
         <Link href="/note">
@@ -67,7 +67,7 @@ function LeftBar() {
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
           >
-            <DeleteOutlineSharpIcon sx={{ fontSize: 30 }} />
+            <DeleteOutlineSharpIcon className="menu-icon" />
           </OptionItem>
         </Link>
       </div>

@@ -27,6 +27,19 @@ body {
 } */
 
 @layer components {
+  .menu-icon {
+    @apply text-lg
+    sm:text-2xl
+    md:text-2xl
+    lg:text-3xl;
+  }
+  .menu-text {
+    @apply text-xs ml-0 text-darkLeftBarText flex items-center justify-center
+    sm:text-sm 
+    md:ml-4 
+    lg:text-base lg:ml-6
+    xl:text-lg
+  }
   .editableDiv {
     @apply hover:cursor-text  text-white outline-none whitespace-pre-wrap;
   }
@@ -37,6 +50,6 @@ body {
     @apply border-8 border-transparent rounded-full hover:bg-darkHoverCircle hover:border-darkHoverCircle;
   }
   .icon-position {
-    @apply absolute right-3 top-3
+    @apply absolute right-3 top-3;
   }
 }

@@ -198,16 +198,19 @@ function CardForm({
   };
   useEffect(() => {
     const handleResize = () => {
-      const [diffX, diffY] = [
-        calculateTheValueForTranSlation()[0],
-        calculateTheValueForTranSlation()[1],
-      ];
-      const targetWidth = window.innerWidth / 3;
-      setAnimateWidth(targetWidth);
-      setInitAnimateWidth(targetWidth);
-      setInitDestinationBypx({ x: diffX, y: diffY });
-      setDestinationBypx({ x: diffX, y: diffY });
-    };
+      if(transform){
+        const [diffX, diffY] = [
+          calculateTheValueForTranSlation()[0],
+          calculateTheValueForTranSlation()[1],
+        ];
+        const targetWidth = window.innerWidth / 3;
+        setAnimateWidth(targetWidth);
+        setInitAnimateWidth(targetWidth);
+        setInitDestinationBypx({ x: diffX, y: diffY });
+        setDestinationBypx({ x: diffX, y: diffY });
+      };
+      }
+
 
     window.addEventListener("resize", handleResize);
 

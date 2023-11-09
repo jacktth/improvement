@@ -17,9 +17,9 @@ function SettingTools() {
         onClick={() => dispatch(changeListViewTo(!listView))}
       >
         {listView ? (
-          <ViewAgendaOutlinedIcon sx={{ fontSize: 30 }} />
+          <ViewAgendaOutlinedIcon className="text-white menu-icon" />
         ) : (
-          <GridViewOutlinedIcon sx={{ fontSize: 30 }} />
+          <GridViewOutlinedIcon className="text-white menu-icon"  />
         )}
       </button>
 
