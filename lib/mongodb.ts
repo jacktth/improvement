@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 
 const mongodbClient = async () => {
-  // const MONGODB_URL = process.env.MONGODB_URL_DOCKER;
-  const MONGODB_URL = process.env.MONGODB_Connection_String;
+  const MONGODB_URL = process.env.MONGODB_URL_DOCKER;
+  
+  // const MONGODB_URL = process.env.MONGODB_Connection_String;
   if (!MONGODB_URL) {
     throw new Error(
       "Please define the MONGODB_URL environment variable inside .env.local"

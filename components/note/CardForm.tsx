@@ -261,7 +261,7 @@ function CardForm({
             onMouseEnter={mouseInHandler}
             onMouseLeave={mouseLeaveHandler}
             ref={cardDisplayRef}
-            className={`w-full h-auto   break-all noteBoarder  text-white p-3
+            className={`w-full   break-all noteBoarder  text-white p-3
             ${
               transform
                 ? "bg-darkbg shadow-black/20 shadow-lg z-50"
@@ -300,7 +300,7 @@ function CardForm({
                 </div>
 
                 <div
-                  className="relative h-96 w-full editableDiv   overflow-auto "
+                  className="relative h-fit w-full editableDiv   overflow-auto "
                   ref={divContentRef}
                   contentEditable
                   dangerouslySetInnerHTML={{ __html: inputContent }}
@@ -311,8 +311,8 @@ function CardForm({
             ) : (
               <>
                 {" "}
-                <div>
-                  <div className="flex ">
+                <div className="h-24">
+                  <div className="flex  h-10">
                     <div
                       className="w-full "
                       dangerouslySetInnerHTML={{ __html: inputTitle }}
@@ -333,8 +333,8 @@ function CardForm({
                       )}
                     </button>
                   </div>
-                  <div className={"w-full max-h-20 overflow-hidden  "}>
-                    <pre
+                  <div className={"w-full  h-12 overflow-hidden  break-words"}>
+                    <pre className="h-fit"
                       dangerouslySetInnerHTML={{ __html: inputContent }}
                     ></pre>
                   </div>
@@ -348,7 +348,7 @@ function CardForm({
   };
 
   return (
-    <main className="w-32">
+    <main className="w-32 ">
       <SmallCard />
 
       <div className={` h-32 w-32`}></div>

@@ -7,6 +7,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 export interface NoteState {
   value: number
   textSearchedCards: ICardAfterParsed[]
+  searchText:string
   laterDoPin: boolean
   changePin: boolean
   listView:boolean
@@ -18,6 +19,7 @@ export interface NoteState {
 const initialState: NoteState = {
   value: 0,
   textSearchedCards:[],
+  searchText:"",
   laterDoPin: false,
   changePin: false,
   listView:true
@@ -39,6 +41,9 @@ export const noteSlice = createSlice({
     addSearchedCard: (state, action: PayloadAction<ICardAfterParsed[]>) => {
       state.textSearchedCards = action.payload
     },
+    searchCardByText: (state, action: PayloadAction<string>) => {
+      state.searchText = action.payload
+    },
     laterDoPin: (state, action: PayloadAction<boolean>) => {
       state.laterDoPin = action.payload
     },
@@ -52,6 +57,6 @@ export const noteSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { increment, addSearchedCard, laterDoPin ,doPin,changeListViewTo} = noteSlice.actions
+export const { increment, addSearchedCard, searchCardByText,laterDoPin ,doPin,changeListViewTo} = noteSlice.actions
 const counterReducer = noteSlice.reducer
 export default counterReducer

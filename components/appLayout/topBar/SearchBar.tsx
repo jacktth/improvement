@@ -2,23 +2,28 @@
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import { redirect } from "next/navigation";
-import { useRef, useState } from "react";
-export type DocCardId = {
-  _id: string;
-};
+import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { searchCardByText } from "@/app/note/noteSlice";
 
 function SearchBar() {
   const [searchText, setSearcText] = useState("");
   const [clickInput, setClickInput] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
+
   const search = async (formData: FormData) => {
-    redirect(`/searchedNotes/${searchText}/`);
+    dispatch(searchCardByText(searchText));
+    // redirect(`/searchedNotes/${searchText}/`);
   };
   const clearButtonHandler = () => {
     if (inputRef.current) {
       inputRef.current.value = "";
+      setSearcText("")
     }
-    redirect(`/note`);
+    dispatch(searchCardByText(""));
+
+    // redirect(`/note`);
   };
   return (
     <>
@@ -33,7 +38,9 @@ function SearchBar() {
             type="submit"
           >
             <SearchIcon
-              className={`m-2 ${clickInput ? "text-black" : "text-darkActiveText"}`}
+              className={`m-2 ${
+                clickInput ? "text-black" : "text-darkActiveText"
+              }`}
               sx={{ fontSize: 30 }}
             />
           </button>
@@ -59,7 +66,9 @@ function SearchBar() {
             onClick={() => clearButtonHandler()}
           >
             <ClearIcon
-              className={`m-2 ${clickInput ? "text-black" : "text-darkActiveText"} `}
+              className={`m-2 ${
+                clickInput ? "text-black" : "text-darkActiveText"
+              } `}
               sx={{ fontSize: 30 }}
             />
           </button>

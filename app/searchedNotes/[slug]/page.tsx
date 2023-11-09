@@ -9,7 +9,7 @@ export default async function SearchedCardsPage({ params }: { params: { slug: st
         );
     
   return (
-    <div className="grid grid-cols-4 gap-4 w-full">
+    <div className="grid grid-cols-4 gap-4 w-full pt-4 pl-4">
       {parsedObjectRes.map((cardInfo: ICardAfterParsed, i) => (
         <div key={cardInfo._id}>
           <CardForm
