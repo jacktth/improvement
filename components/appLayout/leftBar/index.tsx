@@ -27,7 +27,9 @@ function LeftBar() {
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
           >
-            <LightbulbOutlinedIcon className="menu-icon" />
+            <div className="menu-icon-container ">
+              <LightbulbOutlinedIcon className="menu-icon" />
+            </div>
           </OptionItem>
         </Link>
         <Link href="/note">
@@ -37,7 +39,9 @@ function LeftBar() {
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
           >
-            <NotificationsNoneOutlinedIcon className="menu-icon" />
+            <div className="menu-icon-container ">
+              <NotificationsNoneOutlinedIcon className="menu-icon" />
+            </div>
           </OptionItem>
         </Link>
         <Link href="/note">
@@ -47,7 +51,9 @@ function LeftBar() {
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
           >
-            <EditOutlinedIcon className="menu-icon" />
+            <div className="menu-icon-container ">
+              <EditOutlinedIcon className="menu-icon" />
+            </div>
           </OptionItem>
         </Link>
         <Link href="/note">
@@ -57,7 +63,9 @@ function LeftBar() {
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
           >
-            <ArchiveOutlinedIcon className="menu-icon" />
+            <div className="menu-icon-container ">
+              <ArchiveOutlinedIcon className="menu-icon" />
+            </div>
           </OptionItem>
         </Link>
         <Link href="/note">
@@ -67,7 +75,9 @@ function LeftBar() {
             selectingOption={optionSelected}
             setOptionSelected={setOptionSelected}
           >
-            <DeleteOutlineSharpIcon className="menu-icon" />
+            <div className="menu-icon-container ">
+              <DeleteOutlineSharpIcon className="menu-icon" />
+            </div>
           </OptionItem>
         </Link>
       </div>

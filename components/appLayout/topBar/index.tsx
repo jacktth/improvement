@@ -8,24 +8,28 @@ function TopBar() {
       className="flex fixed justify-between w-screen h-20 bg-darkbg 
         border-b-[0.5px] border-gray-500"
     >
-      <div className="flex content-center ml-9  w-2/6">
-        <button className="my-auto hover:bg-darkHoverCircle w-14 h-14  rounded-full">
-          <MenuIcon className="menu-icon text-white" />
+      <div className="flex lg:pl-4 w-1/6   md:w-2/6 ">
+        <button className="
+        hover:bg-darkHoverCircle  rounded-full w-full 
+        md:my-auto md:h-16 md:w-16">
+          <MenuIcon className="menu-icon  text-white" />
         </button>
 
-        <a href="/note" className="my-auto text-center">
+        <a href="/note" className="my-auto text-center hidden sm:hidden md:block">
           <NoteAltIcon
             className="text-orange-300 
-            text-[35px] sm:text-[35px] md:text-[40px] lg:text-[50px]"
+    text-[35px] sm:text-[35px] md:text-[40px] lg:text-[50px] xl:text-[60px]"
           />
-          <span className="inline-block align-middle 
-          text-gray-200 text-[0px] sm:text-[20px] md:text-[23px] lg-[30px]">
+          <span
+            className="inline-block align-middle ml-2
+          text-gray-200 text-[0px] sm:text-[20px] md:text-[23px] lg:text-[30px] "
+          >
             Notes
           </span>
         </a>
       </div>
 
-      <div className="w-full flex">
+      <div className="w-4/6 md:w-full flex">
         <SearchBar />
       </div>
 

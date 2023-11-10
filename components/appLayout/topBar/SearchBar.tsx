@@ -1,7 +1,7 @@
 "use client";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { searchCardByText } from "@/app/note/noteSlice";
@@ -11,19 +11,20 @@ function SearchBar() {
   const [clickInput, setClickInput] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
-
+  const { push } = useRouter();
   const search = async (formData: FormData) => {
     dispatch(searchCardByText(searchText));
-    // redirect(`/searchedNotes/${searchText}/`);
+    redirect(`/searchedNotes/${searchText}/`);
   };
   const clearButtonHandler = () => {
+    
     if (inputRef.current) {
       inputRef.current.value = "";
       setSearcText("")
     }
     dispatch(searchCardByText(""));
-
-    // redirect(`/note`);
+    push(`/note`);
+    
   };
   return (
     <>

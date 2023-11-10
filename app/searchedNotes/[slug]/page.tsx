@@ -7,6 +7,7 @@ export default async function SearchedCardsPage({ params }: { params: { slug: st
         const parsedObjectRes = Object.values<ICardAfterParsed>(
           JSON.parse(JSON.stringify(await res))
         );
+       
     
   return (
     <div className="grid grid-cols-4 gap-4 w-full pt-4 pl-4">

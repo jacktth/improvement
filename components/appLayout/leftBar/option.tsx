@@ -21,14 +21,14 @@ function OptionItem({
     <button
       className={`${
         selectingOption===title ? "bg-darkFocusOption" : ""
-      } w-full h-16 sm:pl-1 md:pl-4 rounded-r-full hover:bg-darkHoverCircle`}
+      } w-full h-16  lg:pl-4 rounded-r-full hover:bg-darkHoverCircle`}
       onClick={clickHandler}
     >
-      <div className="text-center md:flex sm:inline-block">
+      <div className="text-center sm:inline-block md:flex lg:flex ">
         <div className="text-darkInactiveIcon">
           {children ? children : <></>}
         </div>
-        <span className="menu-text ">{title}</span>
+        <span className="menu-text hidden sm:hidden md:flex">{title}</span>
       </div>
     </button>
   );

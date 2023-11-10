@@ -7,7 +7,7 @@ import {
   ClassifiedCard,
   searchCardsWithInputTextAction,
 } from "@/app/note/action";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 function CardsGallery(classifiedCards: ClassifiedCard) {
   const [searchedCard, setsearchedCard] = useState<ICardAfterParsed[]>([]);
@@ -110,7 +110,6 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
   const SearchedNotes = () => {
     return (
       <>
-      
         <div className="grid grid-cols-4 gap-4 ">
           {searchedCard.map((cardInfo: ICardAfterParsed, i) => (
             <div key={cardInfo._id}>
@@ -130,7 +129,13 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
   };
   return (
     <>
-      {searchedCard.length === 0 ? <NormalDisplayedCards /> : <SearchedNotes />}
+      {searchText.length === 0 && searchedCard.length === 0 ? (
+        <NormalDisplayedCards />
+      ) : (
+        <Suspense fallback={<p className="text-white h-36">Loading feed...</p>}>
+          <SearchedNotes />
+        </Suspense>
+      )}
     </>
   );
 }

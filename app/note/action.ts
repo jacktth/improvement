@@ -142,7 +142,7 @@ export async function searchCardsWithInputTextAction(searchText:string) {
       return { ...card, _id: card._id.toString(),__v:card.__v };
     });
     console.log(parsedRes);
-    revalidatePath("/searchedNotes/"+searchText);
+    // revalidatePath("/searchedNotes/"+searchText);
     return parsedRes;
   }
 }

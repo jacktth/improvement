@@ -51,7 +51,10 @@ function CardForm({
   );
   const [initDestinationBypx, setInitDestinationBypx] =
     useState<CSSCoordinationObject>({ x: "auto", y: "auto" });
-  const [initXY, setInitXY] = useState<any>({ x: 0, y: 0 });
+  const [animateHeight, setAnimateHeight] = useState<number | string>("220px");
+  const [initAnimateHeight, setInitAnimateHeight] = useState<number | string>(
+    "122px"
+  );
   const [animateWidth, setAnimateWidth] = useState<number | string>("220px");
   const [initAnimateWidth, setInitAnimateWidth] = useState<number | string>(
     "220px"
@@ -155,10 +158,13 @@ function CardForm({
       // setInitAnimateWidth(50);
       console.log("enter transform animation");
       setInitAnimateWidth("220px");
+      setInitAnimateHeight("220px");
       setInitDestinationBypx({ x: "auto", y: "auto" });
     } else {
       // setInitXY({ x: transformXY.x, y: transformXY.y });
       setInitAnimateWidth(animateWidth);
+      setInitAnimateHeight(animateHeight);
+
       setInitDestinationBypx({ x: destinationBypx.x, y: destinationBypx.y });
 
       console.log("exit transform animation");
@@ -168,7 +174,9 @@ function CardForm({
     // const [diffX, diffY] = calculateTheValueForTranSlation();
     // setTransformXY({ x: diffX, y: diffY });
     const targetWidth = window.innerWidth / 3;
+    const targetHeight = window.innerWidth / 2;
     setAnimateWidth(targetWidth);
+    setAnimateHeight(targetHeight);
     const [destinationX, destinationY] = [window.innerWidth / 3, 100];
     setDestinationBypx({ x: destinationX, y: destinationY });
     setTransformSideEffect(false);
@@ -176,53 +184,28 @@ function CardForm({
   const transformExitEffect = () => {
     // setTransformXY({ x: 0, y: 0 });
     setInitAnimateWidth(animateWidth);
+    setInitAnimateHeight(animateHeight);
+
     setAnimateWidth("220px");
+    setAnimateHeight("220px");
     // setDiffTransformFromResize({ x: 0, y: 0 });
     console.log("side effect");
 
     setDestinationBypx({ x: "auto", y: "auto" });
     setTransformSideEffect(false);
   };
-  useEffect(() => {
-    if (transform && transformSideEffect) {
-      transformEnterEffect();
-    } else if (transform === false && transformSideEffect) {
-      transformExitEffect();
-    }
-
-    setNoDiffBetweenInItAndActual(false);
-  }, [transform]);
   const resetInitToTransformedPosition = () => {
     setInitAnimateWidth(animateWidth);
+    setInitAnimateHeight(animateHeight);
+
     setInitDestinationBypx({ x: destinationBypx.x, y: destinationBypx.y });
   };
-  useEffect(() => {
-    const handleResize = () => {
-      if(transform){
-        const [diffX, diffY] = [
-          calculateTheValueForTranSlation()[0],
-          calculateTheValueForTranSlation()[1],
-        ];
-        const targetWidth = window.innerWidth / 3;
-        setAnimateWidth(targetWidth);
-        setInitAnimateWidth(targetWidth);
-        setInitDestinationBypx({ x: diffX, y: diffY });
-        setDestinationBypx({ x: diffX, y: diffY });
-      };
-      }
-
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  });
-
   const mouseInHandler = () => {
     if (transform) {
     } else if (noDiffBetweenInItAndActual === false) {
       setInitAnimateWidth("220px");
+      setInitAnimateHeight("220px");
+
       setInitDestinationBypx({ x: "auto", y: "auto" });
       setNoDiffBetweenInItAndActual(true);
     } else if (transform === false) {
@@ -235,6 +218,50 @@ function CardForm({
       setMouseIn(false);
     }
   };
+  useEffect(() => {
+    if (transform && transformSideEffect) {
+      transformEnterEffect();
+    console.log("trigger transformEnterEffect in useeffectr")
+
+    } else if (transform === false && transformSideEffect) {
+      transformExitEffect();
+      console.log("trigger transformExitEffect in useeffectr")
+
+
+    }
+
+    setNoDiffBetweenInItAndActual(false);
+  }, [transform]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (transform) {
+        const [diffX, diffY] = [
+          calculateTheValueForTranSlation()[0],
+          calculateTheValueForTranSlation()[1],
+        ];
+        const targetWidth = window.innerWidth / 3;
+        const targetHeight = window.innerWidth / 2;
+        setAnimateWidth(targetWidth);
+        setAnimateHeight(targetHeight);
+        setInitAnimateWidth(targetWidth);
+        setInitAnimateHeight(targetHeight);
+
+        setInitDestinationBypx({ x: diffX, y: diffY });
+        setDestinationBypx({ x: diffX, y: diffY });
+      }
+    console.log("handleResize triggered in useeffects");
+
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
+
+
   const SmallCard = () => {
     return (
       <>
@@ -244,6 +271,7 @@ function CardForm({
             // x: initXY.x + diffTransformFromResize.x,
             // y: initXY.y + diffTransformFromResize.y,
             width: initAnimateWidth,
+            height: 300,
             position: "fixed",
 
             top: initDestinationBypx.y,
@@ -254,17 +282,19 @@ function CardForm({
             // x: transformXY.x + diffTransformFromResize.x,
             // y: transformXY.y + diffTransformFromResize.y,
             width: animateWidth,
+            height: 300,
+
             top: destinationBypx.y,
             left: destinationBypx.x,
           }}
           onClick={() => enterViewCard()}
-          transition={{ duration: 0.1 }}
+          transition={{ duration: 1 }}
         >
           <div
             onMouseEnter={mouseInHandler}
             onMouseLeave={mouseLeaveHandler}
             ref={cardDisplayRef}
-            className={`w-full   break-all noteBoarder  text-white p-3
+            className={`w-full h-full absolute  break-all noteBoarder  text-white p-3
             ${
               transform
                 ? "bg-darkbg shadow-black/20 shadow-lg z-50"
@@ -337,7 +367,8 @@ function CardForm({
                     </button>
                   </div>
                   <div className={"w-full  h-12 overflow-hidden  break-words"}>
-                    <pre className="h-fit"
+                    <pre
+                      className="h-fit"
                       dangerouslySetInnerHTML={{ __html: inputContent }}
                     ></pre>
                   </div>

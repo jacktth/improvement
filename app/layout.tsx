@@ -4,7 +4,7 @@ import "./globals.css";
 import ReduxProvider from "@/components/redux/RedduxProvider";
 
 import LeftBar from "@/components/appLayout/leftBar";
-import TopBar from "@/components/appLayout/topBar/page";
+import TopBar from "@/components/appLayout/topBar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
