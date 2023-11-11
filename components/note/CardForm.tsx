@@ -38,8 +38,7 @@ function CardForm({
     useState(false);
   const [inputContent, setInputContent] = useState(content);
   const [inputTitle, setInputTitle] = useState(title);
-  const formRef = useRef<HTMLFormElement>(null);
-  const cardDisplayRef = useRef<HTMLDivElement>(null);
+  const noteContainerRef = useRef<HTMLDivElement>(null);
   const divTitleRef = useRef<HTMLDivElement>(null);
   const divContentRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
@@ -84,12 +83,7 @@ function CardForm({
     }
     setLaterPin(false);
   };
-  const exitViewCardHandler = () => {
-    document.body.style.overflow = "auto";
-    triggerTransformAnimationSideEffect();
-    updateCard();
-    console.log("exit viewing");
-  };
+
   const clickSubmitButtonHandler = () => {
     // updateCard();
     updateCard();
@@ -100,7 +94,20 @@ function CardForm({
     setTransformSideEffect(true);
     setMouseIn(false);
   };
-
+  const exitViewCardHandler = () => {
+    document.body.style.overflow = "auto";
+    triggerTransformAnimationSideEffect();
+    updateCard();
+    if (noteContainerRef.current) {
+      setInitAnimateHeight(noteContainerRef.current.clientHeight);
+      setAnimateHeight(noteContainerRef.current.clientHeight);
+      console.log(
+        "exit viewing now, set init and animation height,",
+        noteContainerRef.current.clientHeight
+      );
+    }
+    console.log("exit viewing");
+  };
   const clickPinButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
@@ -123,7 +130,7 @@ function CardForm({
     }
   };
   const calculateTheValueForTranSlation = () => {
-    const ref = cardDisplayRef.current;
+    const ref = noteContainerRef.current;
 
     if (ref) {
       const [x, y] = [
@@ -170,18 +177,54 @@ function CardForm({
       console.log("exit transform animation");
     }
   };
-  const transformEnterEffect = () => {
+  const responsiveHeight = {
+    base: 300,
+    short: 400,
+    mid: 520,
+    tall: 800,
+  };
+  const EnterAnimationEffect = () => {
     // const [diffX, diffY] = calculateTheValueForTranSlation();
     // setTransformXY({ x: diffX, y: diffY });
     const targetWidth = window.innerWidth / 3;
-    const targetHeight = window.innerWidth / 2;
+
+    // const targetHeight = window.innerWidth / 2;
     setAnimateWidth(targetWidth);
-    setAnimateHeight(targetHeight);
+    if (window.innerHeight > 1000) {
+      setAnimateHeight(responsiveHeight.tall);
+      console.log(
+        "EnterAnimationEffect set height for destination",
+        responsiveHeight.tall
+      );
+    } else if (window.innerHeight > 800) {
+      setAnimateHeight(responsiveHeight.mid);
+      console.log(
+        "EnterAnimationEffect set height for destination",
+        responsiveHeight.mid
+      );
+    } else if (window.innerHeight > 600) {
+      setAnimateHeight(responsiveHeight.short);
+      console.log(
+        "EnterAnimationEffect set height for destination",
+        responsiveHeight.short
+      );
+    } else {
+      setAnimateHeight(responsiveHeight.base);
+      console.log(
+        "EnterAnimationEffect set height for destination",
+        responsiveHeight.base
+      );
+    }
+
     const [destinationX, destinationY] = [window.innerWidth / 3, 100];
     setDestinationBypx({ x: destinationX, y: destinationY });
     setTransformSideEffect(false);
+    console.log(
+      "EnterAnimationEffect set width and height for destination",
+      targetWidth
+    );
   };
-  const transformExitEffect = () => {
+  const ExitAnimationEffect = () => {
     // setTransformXY({ x: 0, y: 0 });
     setInitAnimateWidth(animateWidth);
     setInitAnimateHeight(animateHeight);
@@ -220,20 +263,55 @@ function CardForm({
   };
   useEffect(() => {
     if (transform && transformSideEffect) {
-      transformEnterEffect();
-    console.log("trigger transformEnterEffect in useeffectr")
-
+      EnterAnimationEffect();
+      console.log("trigger EnterAnimationEffect in useeffectr");
     } else if (transform === false && transformSideEffect) {
-      transformExitEffect();
-      console.log("trigger transformExitEffect in useeffectr")
-
-
+      ExitAnimationEffect();
+      console.log("trigger ExitAnimationEffect in useeffectr");
     }
 
     setNoDiffBetweenInItAndActual(false);
   }, [transform]);
 
   useEffect(() => {
+    const resetHightState = () =>{
+      const heightString = animateHeight.toString().replace('px','')
+      const heightNumber = Number(heightString)
+      console.log("heightNumber in resetHightState",heightString);
+      
+      if (window.innerHeight > 1000 && heightNumber <= 1000) {
+        setAnimateHeight(responsiveHeight.tall);
+        setInitAnimateHeight(responsiveHeight.tall);
+        console.log(
+          "EnterAnimationEffect set height for destination",
+          responsiveHeight.tall
+        );
+      } else if (window.innerHeight > 800 && heightNumber <= 800) {
+        setAnimateHeight(responsiveHeight.mid);
+        setInitAnimateHeight(responsiveHeight.mid);
+
+        console.log(
+          "EnterAnimationEffect set height for destination",
+          responsiveHeight.mid
+        );
+      } else if (window.innerHeight > 600  && heightNumber <= 600) {
+        setAnimateHeight(responsiveHeight.short);
+        setInitAnimateHeight(responsiveHeight.short);
+
+        console.log(
+          "EnterAnimationEffect set height for destination",
+          responsiveHeight.short
+        );
+      } else if(window.innerHeight < 600 && heightNumber > 600) {
+        setAnimateHeight(responsiveHeight.base);
+        setInitAnimateHeight(responsiveHeight.base);
+
+        console.log(
+          "EnterAnimationEffect set height for destination",
+          responsiveHeight.base
+        );
+      }
+    }
     const handleResize = () => {
       if (transform) {
         const [diffX, diffY] = [
@@ -243,15 +321,14 @@ function CardForm({
         const targetWidth = window.innerWidth / 3;
         const targetHeight = window.innerWidth / 2;
         setAnimateWidth(targetWidth);
-        setAnimateHeight(targetHeight);
+        // setAnimateHeight(targetHeight);
         setInitAnimateWidth(targetWidth);
-        setInitAnimateHeight(targetHeight);
-
+        // setInitAnimateHeight(targetHeight);
         setInitDestinationBypx({ x: diffX, y: diffY });
         setDestinationBypx({ x: diffX, y: diffY });
+        resetHightState()
       }
-    console.log("handleResize triggered in useeffects");
-
+      console.log("handleResize triggered in useeffects");
     };
 
     window.addEventListener("resize", handleResize);
@@ -261,17 +338,16 @@ function CardForm({
     };
   });
 
-
   const SmallCard = () => {
     return (
       <>
         <motion.div
-          className=" "
+          className="noteBoarder border-2 p-2"
           initial={{
             // x: initXY.x + diffTransformFromResize.x,
             // y: initXY.y + diffTransformFromResize.y,
             width: initAnimateWidth,
-            height: 300,
+            height: initAnimateHeight,
             position: "fixed",
 
             top: initDestinationBypx.y,
@@ -282,7 +358,7 @@ function CardForm({
             // x: transformXY.x + diffTransformFromResize.x,
             // y: transformXY.y + diffTransformFromResize.y,
             width: animateWidth,
-            height: 300,
+            height: animateHeight,
 
             top: destinationBypx.y,
             left: destinationBypx.x,
@@ -290,36 +366,75 @@ function CardForm({
           onClick={() => enterViewCard()}
           transition={{ duration: 1 }}
         >
-          <div
-            onMouseEnter={mouseInHandler}
-            onMouseLeave={mouseLeaveHandler}
-            ref={cardDisplayRef}
-            className={`w-full h-full absolute  break-all noteBoarder  text-white p-3
-            ${
-              transform
-                ? "bg-darkbg shadow-black/20 shadow-lg z-50"
-                : "noteBoarder"
-            }
-
-          `}
-          >
-            {transform ? (
-              <div onClick={(e) => e.stopPropagation()}>
-                <div className="flex">
-                  <div
-                    className="editableDiv w-full 
+          {transform ? (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              ref={noteContainerRef}
+              className={`   break-all overflow-auto text-white 
+                h-[99.99999999%] 
+                ${
+                  transform
+                    ? "bg-darkbg shadow-black/20 shadow-lg z-50"
+                    : "noteBoarder"
+                }
+              `}
+            >
+              <div className="flex ">
+                <div
+                  className="editableDiv
                     empty:before:content-[attr(title-placeholder)] 
                     empty:before:text-darkPlaceHolder"
-                    ref={divTitleRef}
-                    dangerouslySetInnerHTML={{
-                      __html: inputTitle === "" ? "" : inputTitle,
-                    }}
-                    contentEditable
-                    title-placeholder="Title"
-                    suppressContentEditableWarning
-                  ></div>
+                  ref={divTitleRef}
+                  dangerouslySetInnerHTML={{
+                    __html: inputTitle === "" ? "" : inputTitle,
+                  }}
+                  contentEditable
+                  title-placeholder="Title"
+                  suppressContentEditableWarning
+                ></div>
+                <button
+                  className="icon-hover icon-position"
+                  onClick={(e) => {
+                    clickPinButtonHandler(e);
+                  }}
+                >
+                  {displayPin ? (
+                    <PushPinIcon className="text-white" />
+                  ) : (
+                    <PushPinOutlinedIcon className="text-darkInactiveIcon" />
+                  )}
+                </button>
+              </div>
+              {/* h-[${responsiveHeight.base}px] 
+                  short:h-[${responsiveHeight.short}px]
+                   mid:h-[${responsiveHeight.mid}px] 
+                   tall:h-[${responsiveHeight.tall}px]  */}
+              <div
+                className={` 
+                   w-full editableDiv   overflow-auto`}
+                ref={divContentRef}
+                contentEditable
+                dangerouslySetInnerHTML={{ __html: inputContent }}
+                suppressContentEditableWarning
+                autoFocus={true}
+              ></div>
+            </div>
+          ) : (
+            <>
+              {" "}
+              <div
+                className="h-24 text-white"
+                onMouseEnter={mouseInHandler}
+                onMouseLeave={mouseLeaveHandler}
+              >
+                <div className="flex">
+                
+                    <pre className="h-12  overflow-hidden  " dangerouslySetInnerHTML={{ __html: inputTitle }}></pre>
+
                   <button
-                    className="icon-hover icon-position"
+                    className={`icon-hover icon-position ${
+                      mouseIn ? "visible" : "invisible"
+                    }`}
                     onClick={(e) => {
                       clickPinButtonHandler(e);
                     }}
@@ -331,51 +446,10 @@ function CardForm({
                     )}
                   </button>
                 </div>
-
-                <div
-                  className="relative h-fit w-full editableDiv   overflow-auto "
-                  ref={divContentRef}
-                  contentEditable
-                  dangerouslySetInnerHTML={{ __html: inputContent }}
-                  suppressContentEditableWarning
-                  autoFocus={true}
-                ></div>
+                  <pre className="h-12  overflow-hidden  " dangerouslySetInnerHTML={{ __html: inputContent }}></pre>
               </div>
-            ) : (
-              <>
-                {" "}
-                <div className="h-24">
-                  <div className="flex  h-10">
-                    <div
-                      className="w-full "
-                      dangerouslySetInnerHTML={{ __html: inputTitle }}
-                    ></div>
-
-                    <button
-                      className={`icon-hover icon-position ${
-                        mouseIn ? "visible" : "invisible"
-                      }`}
-                      onClick={(e) => {
-                        clickPinButtonHandler(e);
-                      }}
-                    >
-                      {displayPin ? (
-                        <PushPinIcon className="text-white" />
-                      ) : (
-                        <PushPinOutlinedIcon className="text-darkInactiveIcon" />
-                      )}
-                    </button>
-                  </div>
-                  <div className={"w-full  h-12 overflow-hidden  break-words"}>
-                    <pre
-                      className="h-fit"
-                      dangerouslySetInnerHTML={{ __html: inputContent }}
-                    ></pre>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
+            </>
+          )}
         </motion.div>
       </>
     );

@@ -99,7 +99,7 @@ export async function updateCardsAction(cardId: string,title:string, content:str
     { _id: cardId },
     { title:title, content: content,editedDate:now }
   );
-  console.log(res);
+  console.log("updated",res);
   // revalidatePath("/note");
 
   return res;

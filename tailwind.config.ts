@@ -25,6 +25,11 @@ const config: Config = {
       },
       fontSize: {
         'autoMax': 'clamp(16px, 1vw, 32px)' // Define the range of font sizes using clamp()
+      },
+      screens: {
+        'short': { 'raw': '(min-height: 600px)' },
+        'mid': { 'raw': '(min-height: 800px)' },
+        'tall': { 'raw': '(min-height: 1000px)' },
       }
     },
   
