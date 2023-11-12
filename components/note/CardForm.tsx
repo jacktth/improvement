@@ -31,6 +31,18 @@ function CardForm({
   pinned = false,
   editedDate = "",
 }) {
+  const responsiveHeight = {
+    base: 300,
+    short: 400,
+    mid: 520,
+    tall: 800,
+  };
+  const responsiveHeightWidthForGridDisplay = {
+    base: { width: 200, height: 200 },
+    short: { width: 250, height: 250 },
+    mid: { width: 400, height: 400 },
+    tall: { width: 500, height: 500 },
+  };
   const [displayPin, setDisplayPin] = useState(pinned);
   const [laterPin, setLaterPin] = useState(false);
   const [mouseIn, setMouseIn] = useState(false);
@@ -44,24 +56,22 @@ function CardForm({
   const dispatch = useDispatch();
   const [transform, setTransform] = useState(false);
   const [transformSideEffect, setTransformSideEffect] = useState(false);
-  const [transformXY, setTransformXY] = useState<any>({ x: 0, y: 0 });
   const [destinationBypx, setDestinationBypx] = useState<CSSCoordinationObject>(
     { x: "auto", y: "auto" }
   );
   const [initDestinationBypx, setInitDestinationBypx] =
     useState<CSSCoordinationObject>({ x: "auto", y: "auto" });
-  const [animateHeight, setAnimateHeight] = useState<number | string>("220px");
+  const [animateHeight, setAnimateHeight] = useState<number | string>(responsiveHeightWidthForGridDisplay.short.height);
   const [initAnimateHeight, setInitAnimateHeight] = useState<number | string>(
-    "122px"
+    responsiveHeightWidthForGridDisplay.short.height
   );
-  const [animateWidth, setAnimateWidth] = useState<number | string>("220px");
+  const [animateWidth, setAnimateWidth] = useState<number | string>(responsiveHeightWidthForGridDisplay.short.width);
   const [initAnimateWidth, setInitAnimateWidth] = useState<number | string>(
-    "220px"
+    responsiveHeightWidthForGridDisplay.short.width
   );
-  const [diffTransformFromResize, setDiffTransformFromResize] = useState({
-    x: 0,
-    y: 0,
-  });
+  const getReponsiveHW = ()=>{
+    return responsiveHeightWidthForGridDisplay.short
+  }
   const updateCard = () => {
     if (divContentRef.current && divTitleRef.current) {
       const titleInnerHTML = divTitleRef.current.innerHTML;
@@ -154,6 +164,7 @@ function CardForm({
     }
   };
   const triggerTransformAnimationSideEffect = () => {
+    const heightWidth = getReponsiveHW()
     //the action here is for the correct init position setting,
     //the useEffect hook will do the animation movement
     //do not move the below set init destination to the useEffect hook
@@ -164,8 +175,8 @@ function CardForm({
       // setInitXY({ x: 0, y: 0 });
       // setInitAnimateWidth(50);
       console.log("enter transform animation");
-      setInitAnimateWidth("220px");
-      setInitAnimateHeight("220px");
+      setInitAnimateWidth(heightWidth.width);
+      setInitAnimateHeight(heightWidth.height);
       setInitDestinationBypx({ x: "auto", y: "auto" });
     } else {
       // setInitXY({ x: transformXY.x, y: transformXY.y });
@@ -176,12 +187,6 @@ function CardForm({
 
       console.log("exit transform animation");
     }
-  };
-  const responsiveHeight = {
-    base: 300,
-    short: 400,
-    mid: 520,
-    tall: 800,
   };
   const EnterAnimationEffect = () => {
     // const [diffX, diffY] = calculateTheValueForTranSlation();
@@ -225,13 +230,14 @@ function CardForm({
     );
   };
   const ExitAnimationEffect = () => {
+    const heightWidth = getReponsiveHW()
+
     // setTransformXY({ x: 0, y: 0 });
     setInitAnimateWidth(animateWidth);
     setInitAnimateHeight(animateHeight);
 
-    setAnimateWidth("220px");
-    setAnimateHeight("220px");
-    // setDiffTransformFromResize({ x: 0, y: 0 });
+    setAnimateWidth(heightWidth.width);
+    setAnimateHeight(heightWidth.height);
     console.log("side effect");
 
     setDestinationBypx({ x: "auto", y: "auto" });
@@ -244,10 +250,12 @@ function CardForm({
     setInitDestinationBypx({ x: destinationBypx.x, y: destinationBypx.y });
   };
   const mouseInHandler = () => {
+    const heightWidth = getReponsiveHW()
+
     if (transform) {
     } else if (noDiffBetweenInItAndActual === false) {
-      setInitAnimateWidth("220px");
-      setInitAnimateHeight("220px");
+      setInitAnimateWidth(heightWidth.width);
+      setInitAnimateHeight(heightWidth.height);
 
       setInitDestinationBypx({ x: "auto", y: "auto" });
       setNoDiffBetweenInItAndActual(true);
@@ -274,11 +282,11 @@ function CardForm({
   }, [transform]);
 
   useEffect(() => {
-    const resetHightState = () =>{
-      const heightString = animateHeight.toString().replace('px','')
-      const heightNumber = Number(heightString)
-      console.log("heightNumber in resetHightState",heightString);
-      
+    const resetHightState = () => {
+      const heightString = animateHeight.toString().replace("px", "");
+      const heightNumber = Number(heightString);
+      console.log("heightNumber in resetHightState", heightString);
+
       if (window.innerHeight > 1000 && heightNumber <= 1000) {
         setAnimateHeight(responsiveHeight.tall);
         setInitAnimateHeight(responsiveHeight.tall);
@@ -294,7 +302,7 @@ function CardForm({
           "EnterAnimationEffect set height for destination",
           responsiveHeight.mid
         );
-      } else if (window.innerHeight > 600  && heightNumber <= 600) {
+      } else if (window.innerHeight > 600 && heightNumber <= 600) {
         setAnimateHeight(responsiveHeight.short);
         setInitAnimateHeight(responsiveHeight.short);
 
@@ -302,7 +310,7 @@ function CardForm({
           "EnterAnimationEffect set height for destination",
           responsiveHeight.short
         );
-      } else if(window.innerHeight < 600 && heightNumber > 600) {
+      } else if (window.innerHeight < 600 && heightNumber > 600) {
         setAnimateHeight(responsiveHeight.base);
         setInitAnimateHeight(responsiveHeight.base);
 
@@ -311,7 +319,7 @@ function CardForm({
           responsiveHeight.base
         );
       }
-    }
+    };
     const handleResize = () => {
       if (transform) {
         const [diffX, diffY] = [
@@ -326,7 +334,7 @@ function CardForm({
         // setInitAnimateHeight(targetHeight);
         setInitDestinationBypx({ x: diffX, y: diffY });
         setDestinationBypx({ x: diffX, y: diffY });
-        resetHightState()
+        resetHightState();
       }
       console.log("handleResize triggered in useeffects");
     };
@@ -428,8 +436,10 @@ function CardForm({
                 onMouseLeave={mouseLeaveHandler}
               >
                 <div className="flex">
-                
-                    <pre className="h-12  overflow-hidden  " dangerouslySetInnerHTML={{ __html: inputTitle }}></pre>
+                  <pre
+                    className="h-12  overflow-hidden  "
+                    dangerouslySetInnerHTML={{ __html: inputTitle }}
+                  ></pre>
 
                   <button
                     className={`icon-hover icon-position ${
@@ -446,7 +456,10 @@ function CardForm({
                     )}
                   </button>
                 </div>
-                  <pre className="h-12  overflow-hidden  " dangerouslySetInnerHTML={{ __html: inputContent }}></pre>
+                <pre
+                  className="h-12  overflow-hidden  "
+                  dangerouslySetInnerHTML={{ __html: inputContent }}
+                ></pre>
               </div>
             </>
           )}
@@ -456,10 +469,9 @@ function CardForm({
   };
 
   return (
-    <main className="w-32 ">
+    <main className={`h-[300px] w-[300px]`}>
       <SmallCard />
 
-      <div className={` h-32 w-32`}></div>
       {transform && (
         <div
           className="fixed h-screen w-screen 

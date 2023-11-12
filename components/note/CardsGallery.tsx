@@ -16,23 +16,23 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
   // const searchedCard: ICardAfterParsed[] = useSelector(
   //   (state: RootState) => state.note.textSearchedCards
   // );
-  const searchText = useSelector((state: RootState) => state.note.searchText);
+  // const searchText = useSelector((state: RootState) => state.note.searchText);
 
-  useEffect(() => {
-    async function setResNote() {
-      if (searchText === "") {
-        setsearchedCard([]);
-      } else {
-        const res = await searchCardsWithInputTextAction(searchText);
-        const parsedObjectRes = Object.values<ICardAfterParsed>(
-          JSON.parse(await JSON.stringify(res))
-        );
-        setsearchedCard(parsedObjectRes);
-      }
-    }
-    setResNote();
-    console.log("search word", searchText);
-  }, [searchText]);
+  // useEffect(() => {
+  //   async function setResNote() {
+  //     if (searchText === "") {
+  //       setsearchedCard([]);
+  //     } else {
+  //       const res = await searchCardsWithInputTextAction(searchText);
+  //       const parsedObjectRes = Object.values<ICardAfterParsed>(
+  //         JSON.parse(await JSON.stringify(res))
+  //       );
+  //       setsearchedCard(parsedObjectRes);
+  //     }
+  //   }
+  //   setResNote();
+  //   console.log("search word", searchText);
+  // }, [searchText]);
 
   const displayedCards = searchedCard.length > 0 ? searchedCard : noPinnedCards;
 
@@ -84,7 +84,11 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
         ) : (
           <>
             {" "}
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid  gap-4 justify-center
+            md:grid-cols-2
+            lg:grid-cols-3
+            xl:grid-cols-4
+            ">
               {noPinnedCards ? (
                 displayedCards.map((cardInfo: ICardAfterParsed, i) => (
                   <div key={cardInfo._id}>
@@ -129,13 +133,14 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
   };
   return (
     <>
-      {searchText.length === 0 && searchedCard.length === 0 ? (
+      {/* {searchText.length === 0 && searchedCard.length === 0 ? (
         <NormalDisplayedCards />
       ) : (
         <Suspense fallback={<p className="text-white h-36">Loading feed...</p>}>
           <SearchedNotes />
         </Suspense>
-      )}
+      )} */}
+      <NormalDisplayedCards />
     </>
   );
 }

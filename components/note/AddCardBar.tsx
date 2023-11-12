@@ -73,8 +73,8 @@ function AddCardBar() {
   };
   return (
     <div
-      className="mt-3 h-auto min-h-full w-2/3 noteBoarder bg-darkbg 
-      rounded-xl cursor-text shadow-black shadow-md
+      className=" h-auto min-h-full w-2/3  bg-darkbg noteBoarder
+     cursor-text shadow-black/30 shadow-xl
       "
     >
       <div
