@@ -5,10 +5,10 @@ import SettingTools from "@/components/appLayout/topBar/SettingTools";
 function TopBar() {
   return (
     <div
-      className="flex fixed justify-between w-screen h-20 bg-darkbg 
+      className="flex  justify-between w-full h-full bg-darkbg 
         border-b-[0.5px] border-gray-500"
     >
-      <div className="flex lg:pl-4 w-1/6   md:w-2/6 ">
+      <div className="flex lg:pl-4 w-1/6   ">
         <button className="
         hover:bg-darkHoverCircle  rounded-full w-full 
         md:my-auto md:h-16 md:w-16">

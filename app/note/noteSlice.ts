@@ -50,13 +50,13 @@ export const noteSlice = createSlice({
     doPin: (state, action: PayloadAction<boolean>) => {
       state.laterDoPin = action.payload
     },
-    changeListViewTo: (state, action: PayloadAction<boolean>) => {
+    changeToListView: (state, action: PayloadAction<boolean>) => {
       state.listView = action.payload
     },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { increment, addSearchedCard, searchCardByText,laterDoPin ,doPin,changeListViewTo} = noteSlice.actions
+export const { increment, addSearchedCard, searchCardByText,laterDoPin ,doPin,changeToListView} = noteSlice.actions
 const counterReducer = noteSlice.reducer
 export default counterReducer

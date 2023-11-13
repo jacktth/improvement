@@ -19,7 +19,7 @@ function LeftBar() {
   const [optionSelected, setOptionSelected] = useState<OptionWordType>("Notes");
   return (
     <>
-      <div className="">
+      <div className="h-full">
         <Link href="/note">
           {" "}
           <OptionItem

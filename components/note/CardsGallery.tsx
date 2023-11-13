@@ -13,6 +13,9 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
   const [searchedCard, setsearchedCard] = useState<ICardAfterParsed[]>([]);
   const noPinnedCards = classifiedCards.noPinnedCards;
   const PinnedCards = classifiedCards.PinnedCards;
+  const listView: boolean = useSelector(
+    (state: RootState) => state.note.listView
+  );
   // const searchedCard: ICardAfterParsed[] = useSelector(
   //   (state: RootState) => state.note.textSearchedCards
   // );
@@ -37,16 +40,18 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
   const displayedCards = searchedCard.length > 0 ? searchedCard : noPinnedCards;
 
   const NormalDisplayedCards = () => {
+    const displayCssParam = listView
+      ? "grid w-[90%] grid-cols-1 grid-rows-1  justify-center items-center "
+      : "grid  gap-4 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
     return (
-      <>
+      <div className="w-full h-[99.9999%] overflow-auto">
         {PinnedCards.length > 0 ? (
           <>
-            <div className="h-auto">
-              <span className="text-darkInactiveIcon">PINNED</span>
+              <span className="text-darkInactiveIcon  ">PINNED</span>
 
-              <div className="grid grid-cols-4 gap-4 ">
+              <div className={`${displayCssParam}`}>
                 {PinnedCards.map((cardInfo: ICardAfterParsed, i) => (
-                  <div className="h-fit" key={cardInfo._id}>
+                  <div className="row-span-1 col-span-1 mb-2" key={cardInfo._id}>
                     <CardForm
                       content={cardInfo.content}
                       title={cardInfo.title}
@@ -58,13 +63,12 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="h-auto mt-24">
+            <div className=" mt-24">
               <span className="text-darkInactiveIcon">OTHERS</span>
-              <div className="grid grid-cols-4 gap-4">
+              <div className={`${displayCssParam}`}>
                 {noPinnedCards ? (
                   displayedCards.map((cardInfo: ICardAfterParsed, i) => (
-                    <div key={cardInfo._id}>
+                    <div className="mb-2" key={cardInfo._id}>
                       <CardForm
                         content={cardInfo.content}
                         title={cardInfo.title}
@@ -84,11 +88,9 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
         ) : (
           <>
             {" "}
-            <div className="grid  gap-4 justify-center
-            md:grid-cols-2
-            lg:grid-cols-3
-            xl:grid-cols-4
-            ">
+            <div
+              className={`${displayCssParam}`}
+            >
               {noPinnedCards ? (
                 displayedCards.map((cardInfo: ICardAfterParsed, i) => (
                   <div key={cardInfo._id}>
@@ -108,7 +110,7 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
             </div>
           </>
         )}
-      </>
+      </div>
     );
   };
   const SearchedNotes = () => {

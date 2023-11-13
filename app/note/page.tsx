@@ -10,12 +10,12 @@ export default async function Card() {
     JSON.stringify(await getCardsAction())
   );
   return (
-    <div>
+    <div className="">
       <div className="flex w-full items-center justify-center my-5 ">
         <AddCardBar></AddCardBar>
-      </div>
-      
-        <CardsGallery {...classifiedCards}></CardsGallery>
+      </div >
+      <CardsGallery {...classifiedCards}></CardsGallery>
+
     
     </div>
   );
