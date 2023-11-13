@@ -26,11 +26,11 @@ export default function RootLayout({
           <div className="h-[10%]">
             <TopBar />
           </div>
-          <div className="flex w-full h-[90%]">
+          <div className=" flex w-full h-[90%]">
             <div className="  text-white w-1/6 pt-3">
               <LeftBar />
             </div>
-            <div className="w-5/6 overflow-auto">{children}</div>
+            <div className="w-5/6 overflow-auto h-full">{children}</div>
           </div>
         </ReduxProvider>
       </body>

@@ -38,22 +38,7 @@ function CardForm({
     mid: 520,
     tall: 800,
   };
-  const responsiveHeightWidthForGridDisplay = {
-    base: { width: 200, height: 200 },
-    short: { width: 250, height: 250 },
-    mid: { width: 400, height: 400 },
-    tall: { width: 300, height: 300 },
-  };
-  const responsiveHeightWidthForListDisplay = {
-    base: { width: 500, height: 200 },
-    short: { width: 600, height: 250 },
-    mid: { width: 700, height: 400 },
-    tall: { width: 800, height: 500 },
-  };
-
-  const listView: boolean = useSelector(
-    (state: RootState) => state.note.listView
-  );
+ 
 
   const [displayPin, setDisplayPin] = useState(pinned);
   const [laterPin, setLaterPin] = useState(false);
@@ -83,9 +68,7 @@ function CardForm({
   const [initAnimateWidth, setInitAnimateWidth] = useState<number | string>(
     "100%"
   );
-  const getReponsiveHW = () => {
-    return responsiveHeightWidthForGridDisplay.short;
-  };
+ 
   const updateCard = () => {
     if (divContentRef.current && divTitleRef.current) {
       const titleInnerHTML = divTitleRef.current.innerHTML;
@@ -178,7 +161,6 @@ function CardForm({
     }
   };
   const triggerTransformAnimationSideEffect = () => {
-    const heightWidth = getReponsiveHW();
     
     //the action here is for the correct init position setting,
     //the useEffect hook will do the animation movement
@@ -250,7 +232,6 @@ function CardForm({
     );
   };
   const ExitAnimationEffect = () => {
-    const heightWidth = getReponsiveHW();
 
     setAnimateWidth("100%");
     setAnimateHeight("100%");
@@ -265,7 +246,6 @@ function CardForm({
     setInitDestinationBypx({ x: destinationBypx.x, y: destinationBypx.y });
   };
   const mouseInHandler = () => {
-    const heightWidth = getReponsiveHW();
 
     if (transform) {
     } else if (noDiffBetweenInItAndActual === false) {

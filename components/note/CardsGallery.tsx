@@ -8,6 +8,7 @@ import {
   searchCardsWithInputTextAction,
 } from "@/app/note/action";
 import { Suspense, useEffect, useState } from "react";
+import AddCardBar from "./AddCardBar";
 
 function CardsGallery(classifiedCards: ClassifiedCard) {
   const [searchedCard, setsearchedCard] = useState<ICardAfterParsed[]>([]);
@@ -47,22 +48,25 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
       <div className="w-full h-[99.9999%] overflow-auto">
         {PinnedCards.length > 0 ? (
           <>
-              <span className="text-darkInactiveIcon  ">PINNED</span>
+            <div className="flex h-28 w-full items-center justify-center  ">
+              <AddCardBar></AddCardBar>
+            </div>
+            <span className="text-darkInactiveIcon  ">PINNED</span>
 
-              <div className={`${displayCssParam}`}>
-                {PinnedCards.map((cardInfo: ICardAfterParsed, i) => (
-                  <div className="row-span-1 col-span-1 mb-2" key={cardInfo._id}>
-                    <CardForm
-                      content={cardInfo.content}
-                      title={cardInfo.title}
-                      cardId={cardInfo._id}
-                      index={i}
-                      pinned={cardInfo.pinned}
-                      editedDate={cardInfo.editedDate.toString()}
-                    />
-                  </div>
-                ))}
-              </div>
+            <div className={`${displayCssParam}`}>
+              {PinnedCards.map((cardInfo: ICardAfterParsed, i) => (
+                <div className="row-span-1 col-span-1 mb-2" key={cardInfo._id}>
+                  <CardForm
+                    content={cardInfo.content}
+                    title={cardInfo.title}
+                    cardId={cardInfo._id}
+                    index={i}
+                    pinned={cardInfo.pinned}
+                    editedDate={cardInfo.editedDate.toString()}
+                  />
+                </div>
+              ))}
+            </div>
             <div className=" mt-24">
               <span className="text-darkInactiveIcon">OTHERS</span>
               <div className={`${displayCssParam}`}>
@@ -88,9 +92,7 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
         ) : (
           <>
             {" "}
-            <div
-              className={`${displayCssParam}`}
-            >
+            <div className={`${displayCssParam}`}>
               {noPinnedCards ? (
                 displayedCards.map((cardInfo: ICardAfterParsed, i) => (
                   <div key={cardInfo._id}>
