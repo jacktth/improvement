@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import {
   ClassifiedCard,
   searchCardsWithInputTextAction,
-} from "@/app/note/action";
+} from "@/app/action";
 import { Suspense, useEffect, useState } from "react";
 import AddCardBar from "./AddCardBar";
 
@@ -95,7 +95,7 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
             <div className={`${displayCssParam}`}>
               {noPinnedCards ? (
                 displayedCards.map((cardInfo: ICardAfterParsed, i) => (
-                  <div key={cardInfo._id}>
+                  <div className="mb-2" key={cardInfo._id}>
                     <CardForm
                       content={cardInfo.content}
                       title={cardInfo.title}

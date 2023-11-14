@@ -1,5 +1,6 @@
-import { searchCardsWithInputTextAction } from "@/app/note/action";
+import { searchCardsWithInputTextAction } from "@/app/action";
 import CardForm from "@/components/note/CardForm";
+import CardsGallery from "@/components/note/CardsGallery";
 import { ICardAfterParsed } from "@/models/Card";
 
 export default async function SearchedCardsPage({ params }: { params: { slug: string } }) {
@@ -10,19 +11,8 @@ export default async function SearchedCardsPage({ params }: { params: { slug: st
        
     
   return (
-    <div className="grid grid-cols-4 gap-4 w-full pt-4 pl-4">
-      {parsedObjectRes.map((cardInfo: ICardAfterParsed, i) => (
-        <div key={cardInfo._id}>
-          <CardForm
-            content={cardInfo.content}
-            title={cardInfo.title}
-            cardId={cardInfo._id}
-            index={i}
-            pinned={cardInfo.pinned}
-            editedDate={cardInfo.editedDate.toString()}
-          />
-        </div>
-      ))}
-    </div>
+    <>
+    <CardsGallery {...{noPinnedCards:parsedObjectRes,PinnedCards:[]}}></CardsGallery>
+    </>
   );
 }

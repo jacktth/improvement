@@ -3,7 +3,7 @@ import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import { RootState } from "@/app/store";
 import { useDispatch, useSelector } from "react-redux";
 import ViewAgendaOutlinedIcon from "@mui/icons-material/ViewAgendaOutlined";
-import { changeToListView } from "@/app/note/noteSlice";
+import { changeToListView } from "@/app/noteSlice";
 function SettingTools() {
   const listView: boolean = useSelector(
     (state: RootState) => state.note.listView

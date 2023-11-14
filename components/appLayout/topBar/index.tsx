@@ -1,5 +1,6 @@
 import MenuIcon from "@mui/icons-material/Menu";
-import NoteAltIcon from "@mui/icons-material/NoteAlt";
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
+
 import SearchBar from "@/components/appLayout/topBar/SearchBar";
 import SettingTools from "@/components/appLayout/topBar/SettingTools";
 function TopBar() {
@@ -15,7 +16,7 @@ function TopBar() {
           <MenuIcon className="menu-icon  text-white" />
         </button>
 
-        <a href="/note" className="my-auto text-center hidden sm:hidden md:block">
+        <a href="/" className="my-auto text-center hidden sm:hidden md:block">
           <NoteAltIcon
             className="text-orange-300 
     text-[35px] sm:text-[35px] md:text-[40px] lg:text-[50px] xl:text-[60px]"

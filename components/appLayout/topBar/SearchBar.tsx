@@ -4,7 +4,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { redirect, useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { searchCardByText } from "@/app/note/noteSlice";
+import { searchCardByText } from "@/app/noteSlice";
 
 function SearchBar() {
   const [searchText, setSearcText] = useState("");
@@ -23,7 +23,7 @@ function SearchBar() {
       setSearcText("")
     }
     dispatch(searchCardByText(""));
-    push(`/note`);
+    push(`/`);
     
   };
   return (

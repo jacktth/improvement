@@ -20,7 +20,7 @@ function LeftBar() {
   return (
     <>
       <div className="h-full">
-        <Link href="/note">
+        <Link href="/">
           {" "}
           <OptionItem
             title={"Notes"}
@@ -32,7 +32,7 @@ function LeftBar() {
             </div>
           </OptionItem>
         </Link>
-        <Link href="/note">
+        <Link href="/">
           {" "}
           <OptionItem
             title={"Reminders"}
@@ -44,7 +44,7 @@ function LeftBar() {
             </div>
           </OptionItem>
         </Link>
-        <Link href="/note">
+        <Link href="/">
           {" "}
           <OptionItem
             title={"Edit labels"}
@@ -56,7 +56,7 @@ function LeftBar() {
             </div>
           </OptionItem>
         </Link>
-        <Link href="/note">
+        <Link href="/">
           {" "}
           <OptionItem
             title={"Archive"}
@@ -68,7 +68,7 @@ function LeftBar() {
             </div>
           </OptionItem>
         </Link>
-        <Link href="/note">
+        <Link href="/">
           {" "}
           <OptionItem
             title={"Trash"}

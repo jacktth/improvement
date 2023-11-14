@@ -5,7 +5,7 @@ import {
   pinCardsAction,
   unPinCardsAction,
   updateCardsAction,
-} from "@/app/note/action";
+} from "@/app/action";
 import {
   ChangeEvent,
   useEffect,
@@ -14,7 +14,7 @@ import {
   useState,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { laterDoPin } from "@/app/note/noteSlice";
+import { laterDoPin } from "@/app/noteSlice";
 import { AnimatePresence, motion } from "framer-motion";
 import { log } from "console";
 import { RootState } from "@/app/store";
@@ -105,14 +105,7 @@ function CardForm({
     document.body.style.overflow = "auto";
     triggerTransformAnimationSideEffect();
     updateCard();
-    if (noteContainerRef.current) {
-      setInitAnimateHeight(noteContainerRef.current.clientHeight);
-      setAnimateHeight(noteContainerRef.current.clientHeight);
-      console.log(
-        "exit viewing now, set init and animation height,",
-        noteContainerRef.current.clientHeight
-      );
-    }
+ 
     console.log("exit viewing");
   };
   const clickPinButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -179,8 +172,18 @@ function CardForm({
     } else if(transform ) {
       // setInitXY({ x: transformXY.x, y: transformXY.y });
       setInitAnimateWidth(animateWidth);
-      setInitAnimateHeight(animateHeight);
+      setInitAnimateHeight(0);
       setInitDestinationBypx({ x: destinationBypx.x, y: destinationBypx.y });
+      if (noteContainerRef.current) {
+        // setInitAnimateHeight(noteContainerRef.current.clientHeight);
+        // setAnimateHeight(noteContainerRef.current.clientHeight);
+        // console.log(
+        //   "exit viewing now, set init and animation height,",
+        //   noteContainerRef.current.clientHeight
+        // );
+      }
+      
+      
       console.log("exit transform animation setInitDestinationBypx",destinationBypx.x, destinationBypx.y );
 
       console.log("exit transform animation");
@@ -235,7 +238,7 @@ function CardForm({
 
     setAnimateWidth("100%");
     setAnimateHeight("100%");
-    console.log("side effect");
+    console.log("side effect of ExitAnimationEffect");
     setDestinationBypx({ x: "auto", y: "auto" });
     setTransformSideEffect(false);
   };

@@ -4,7 +4,6 @@ import mongodbClient from "@/lib/mongodb";
 import Card, { ICard, ICardAfterParsed } from "@/models/Card";
 import { HydratedDocument } from "mongoose";
 import { revalidatePath } from "next/cache";
-import { type } from "os";
 
 // export async function addCardAction(pinned: boolean, forData: FormData) {
 //   try {
@@ -49,7 +48,7 @@ export async function addCardAction(pinned: boolean, content:string,title:string
         label: [],
       };
       await Card.create<ICard>(cardDetail);
-      revalidatePath("/note");
+      revalidatePath("/");
     }
   } catch (error) {
     console.log(error);
@@ -100,7 +99,6 @@ export async function updateCardsAction(cardId: string,title:string, content:str
     { title:title, content: content,editedDate:now }
   );
   console.log("updated",res);
-  // revalidatePath("/note");
 
   return res;
 }
@@ -111,7 +109,7 @@ export async function pinCardsAction(cardId: string) {
   const res = await Card.updateOne({ _id: cardId }, { pinned: true });
   console.log("UnPinCardsAction",res);
 
-  revalidatePath("/note");
+  revalidatePath("/");
 }
 
 export async function unPinCardsAction(cardId: string) {
@@ -120,7 +118,7 @@ export async function unPinCardsAction(cardId: string) {
   const res = await Card.updateOne({ _id: cardId }, { pinned: false });
   console.log("UnPinCardsAction",res);
   
-  revalidatePath("/note");
+  revalidatePath("/");
 }
 
 export async function searchCardsWithInputTextAction(searchText:string) {

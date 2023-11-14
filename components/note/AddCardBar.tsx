@@ -1,5 +1,5 @@
 "use client";
-import { addCardAction } from "@/app/note/action";
+import { addCardAction } from "@/app/action";
 import { ChangeEvent, useRef, useState } from "react";
 import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import PushPinIcon from "@mui/icons-material/PushPin";

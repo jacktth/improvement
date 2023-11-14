@@ -1,11 +1,20 @@
-import Image from 'next/image'
-import { redirect } from 'next/navigation'
+import CardsGallery from "@/components/note/CardsGallery";
+import { ClassifiedCard, getCardsAction } from "./action";
 
-export default function Home() {
-  redirect("/note")
+
+export default async function Card() {
+  const classifiedCards: ClassifiedCard = JSON.parse(
+    JSON.stringify(await getCardsAction())
+  );
   return (
-    <main className="">
-      
-    </main>
-  )
+    <div className="h-[98%] mt-[1%]">
+  
+      <div className=" h-full">
+      <CardsGallery {...classifiedCards}></CardsGallery>
+
+      </div>
+
+    
+    </div>
+  );
 }
