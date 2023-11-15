@@ -383,7 +383,7 @@ function CardForm({
             >
               <div className="flex ">
                 <div
-                  className="editableDiv
+                  className="editableDiv w-11/12
                     empty:before:content-[attr(title-placeholder)] 
                     empty:before:text-darkPlaceHolder"
                   ref={divTitleRef}
@@ -429,14 +429,14 @@ function CardForm({
                 onMouseEnter={mouseInHandler}
                 onMouseLeave={mouseLeaveHandler}
               >
-                <div className="flex relative justify-between">
+                <div className="flex relative justify-between w-full">
                   <pre
-                    className="h-1/6  overflow-hidden  "
+                    className="h-1/6  overflow-hidden  w-11/12"
                     dangerouslySetInnerHTML={{ __html: inputTitle }}
                   ></pre>
 
                   <button
-                    className={`icon-hover icon-position ${
+                    className={`icon-hover icon-position  ${
                       mouseIn ? "visible" : "invisible"
                     }`}
                     onClick={(e) => {

@@ -11,28 +11,7 @@ function AddCardBar() {
   const divTitleRef = useRef<HTMLDivElement>(null);
   const divContentRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const handleTextareaSize = (e: ChangeEvent) => {
-    const target = e.target as HTMLTextAreaElement;
-    switch (target.name) {
-      case "content":
-        if (textAreaContentRef.current) {
-          textAreaContentRef.current.style.height = `${target.scrollHeight}px`;
-        }
-        break;
-      case "title":
-        if (textAreaTitleRef.current) {
-          textAreaTitleRef.current.style.height = `${target.scrollHeight}px`;
-        }
-        break;
-      default:
-        console.error("unknown target name");
-        break;
-    }
-  };
 
-  const textareaOnChangeHandler = (e: ChangeEvent) => {
-    handleTextareaSize(e);
-  };
   const addCardByDiv = () => {
     console.log("addCardByDiv");
 
@@ -73,8 +52,8 @@ function AddCardBar() {
   };
   return (
     <div
-      className=" h-auto min-h-full w-2/3  bg-darkbg noteBoarder
-     cursor-text shadow-black/30 shadow-xl
+      className=" w-2/3  bg-darkbg noteBoarder
+     cursor-text shadow-black/30 shadow-xl h-max my-4
       "
     >
       <div
@@ -84,8 +63,9 @@ function AddCardBar() {
         }}
       ></div>
       <form
-        className="z-10 inline-block p-4 h-full w-full  relative content-center 
-        rounded-xl bg-darkbg"
+        className={`z-10 ${
+          focusOnForm ? "" : "flex items-center"
+        }   h-full w-full  relative content-center`}
         onClick={(e) => {
           e.stopPropagation();
           setFocusOnForm(true);
@@ -94,10 +74,10 @@ function AddCardBar() {
         // action={addCardByDiv}
       >
         {focusOnForm ? (
-          <div className="h-full">
-            <div className="flex">
+          <div className="h-full p-2 w-full">
+            <div className="flex w-full justify-between">
               <div
-                className="editableDiv w-full
+                className="editableDiv w-10/12
            empty:before:content-[attr(title-placeholder)] 
            empty:before:text-darkPlaceHolder"
                 ref={divTitleRef}
@@ -106,7 +86,7 @@ function AddCardBar() {
                 autoFocus={focusOnForm}
                 suppressContentEditableWarning
               ></div>
-              <div>
+              <div className="w-2/12">
                 <button type="button" onClick={() => setPin(!pin)}>
                   {" "}
                   {pin ? (
@@ -132,10 +112,13 @@ function AddCardBar() {
               autoFocus={focusOnForm}
             ></div>
             <button
-            className="text-darkActiveText"
+              className="text-darkActiveText"
               //Dont change to submit, casuing error
               type="button"
-              onClick={() => clickSubmitButtonHandler()}
+              onClick={(e) => {
+                e.stopPropagation();
+                clickSubmitButtonHandler();
+              }}
             >
               Close
             </button>
@@ -144,7 +127,7 @@ function AddCardBar() {
           <>
             {" "}
             <input
-              className=" w-[95%]  font-bold text-autoMax   outline-none
+              className=" w-[100%] p-2  font-bold text-autoMax  rounded-lg outline-none
                bg-darkbg"
               placeholder="Take a note..."
             />

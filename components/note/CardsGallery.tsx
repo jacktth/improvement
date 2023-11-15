@@ -42,13 +42,13 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
 
   const NormalDisplayedCards = () => {
     const displayCssParam = listView
-      ? "grid w-[90%] grid-cols-1 grid-rows-1  justify-center items-center "
+      ? "grid w-[95%] grid-cols-1 grid-rows-1  justify-center items-center "
       : "grid  gap-4 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
     return (
       <div className="w-full h-[99.9999%] overflow-auto">
         {PinnedCards.length > 0 ? (
           <>
-            <div className="flex h-28 w-full items-center justify-center  ">
+            <div className="flex w-full items-center justify-center  ">
               <AddCardBar></AddCardBar>
             </div>
             <span className="text-darkInactiveIcon  ">PINNED</span>
@@ -92,6 +92,9 @@ function CardsGallery(classifiedCards: ClassifiedCard) {
         ) : (
           <>
             {" "}
+            <div className="flex  w-full items-center justify-center  ">
+              <AddCardBar></AddCardBar>
+            </div>
             <div className={`${displayCssParam}`}>
               {noPinnedCards ? (
                 displayedCards.map((cardInfo: ICardAfterParsed, i) => (
