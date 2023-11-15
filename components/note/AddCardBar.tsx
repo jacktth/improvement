@@ -144,7 +144,7 @@ function AddCardBar() {
           <>
             {" "}
             <input
-              className="  font-bold text-autoMax resize-none  outline-none
+              className=" w-[95%]  font-bold text-autoMax   outline-none
                bg-darkbg"
               placeholder="Take a note..."
             />

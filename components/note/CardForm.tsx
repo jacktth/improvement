@@ -171,7 +171,7 @@ function CardForm({
       setInitDestinationBypx({ x: "auto", y: "auto" });
     } else if(transform ) {
       // setInitXY({ x: transformXY.x, y: transformXY.y });
-      setInitAnimateWidth(animateWidth);
+      setInitAnimateWidth(0);
       setInitAnimateHeight(0);
       setInitDestinationBypx({ x: destinationBypx.x, y: destinationBypx.y });
       if (noteContainerRef.current) {

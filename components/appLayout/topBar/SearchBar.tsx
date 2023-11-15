@@ -27,9 +27,9 @@ function SearchBar() {
     
   };
   return (
-    <>
+    <div className="flex justify-center items-center h-full w-full">
       <div
-        className={`flex grow  m-2 ${
+        className={`flex  w-full h-2/3  ${
           clickInput ? "bg-white" : "bg-darkSearchBar"
         } flex   rounded-lg`}
       >
@@ -46,7 +46,7 @@ function SearchBar() {
             />
           </button>
           <input
-            className={` w-30 outline-none text-2xl grow ${
+            className={` w-20 outline-none text-2xl grow ${
               clickInput
                 ? "bg-white caret-black text-black"
                 : "bg-darkSearchBar caret-white text-white"
@@ -75,7 +75,7 @@ function SearchBar() {
           </button>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -30,7 +30,7 @@ function TopBar() {
         </a>
       </div>
 
-      <div className="w-4/6 md:w-full flex">
+      <div className="w-4/6">
         <SearchBar />
       </div>
 
