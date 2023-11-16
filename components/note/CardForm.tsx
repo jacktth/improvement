@@ -38,7 +38,6 @@ function CardForm({
     mid: 520,
     tall: 800,
   };
- 
 
   const [displayPin, setDisplayPin] = useState(pinned);
   const [laterPin, setLaterPin] = useState(false);
@@ -58,9 +57,7 @@ function CardForm({
   );
   const [initDestinationBypx, setInitDestinationBypx] =
     useState<CSSCoordinationObject>({ x: "auto", y: "auto" });
-  const [animateHeight, setAnimateHeight] = useState<number | string>(
-    "100%"
-  );
+  const [animateHeight, setAnimateHeight] = useState<number | string>("100%");
   const [initAnimateHeight, setInitAnimateHeight] = useState<number | string>(
     "100%"
   );
@@ -68,7 +65,7 @@ function CardForm({
   const [initAnimateWidth, setInitAnimateWidth] = useState<number | string>(
     "100%"
   );
- 
+
   const updateCard = () => {
     if (divContentRef.current && divTitleRef.current) {
       const titleInnerHTML = divTitleRef.current.innerHTML;
@@ -91,9 +88,9 @@ function CardForm({
     setLaterPin(false);
   };
 
-  const clickSubmitButtonHandler = () => {
-    // updateCard();
-    updateCard();
+  const clickSubmitButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    exitViewCardHandler();
   };
   const enterViewCard = () => {
     document.body.style.overflow = "hidden";
@@ -105,7 +102,7 @@ function CardForm({
     document.body.style.overflow = "auto";
     triggerTransformAnimationSideEffect();
     updateCard();
- 
+
     console.log("exit viewing");
   };
   const clickPinButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -138,7 +135,7 @@ function CardForm({
         ref.getBoundingClientRect().y,
       ];
 
-      const [destinationX, destinationY] = [window.innerWidth / 3, 100];
+      const [destinationX, destinationY] = [window.innerWidth / 4, 100];
       const [diffX, diffY] = [destinationX, destinationY];
       setDestinationBypx({ x: destinationX, y: destinationY });
       console.log("ref?.style.width", ref?.style.width);
@@ -154,7 +151,6 @@ function CardForm({
     }
   };
   const triggerTransformAnimationSideEffect = () => {
-    
     //the action here is for the correct init position setting,
     //the useEffect hook will do the animation movement
     //do not move the below set init destination to the useEffect hook
@@ -162,14 +158,14 @@ function CardForm({
     setTransform(!transform);
     setTransformSideEffect(true);
     if (!transform && motionDiv.current) {
-    const initNotewidth = motionDiv.current?.clientWidth
+      const initNotewidth = motionDiv.current?.clientWidth;
       // setInitXY({ x: 0, y: 0 });
       // setInitAnimateWidth(50);
       console.log("enter transform animation");
-      setInitAnimateWidth(initNotewidth! );
+      setInitAnimateWidth(initNotewidth!);
       setInitAnimateHeight("100%");
       setInitDestinationBypx({ x: "auto", y: "auto" });
-    } else if(transform ) {
+    } else if (transform) {
       // setInitXY({ x: transformXY.x, y: transformXY.y });
       setInitAnimateWidth(0);
       setInitAnimateHeight(0);
@@ -182,21 +178,22 @@ function CardForm({
         //   noteContainerRef.current.clientHeight
         // );
       }
-      
-      
-      console.log("exit transform animation setInitDestinationBypx",destinationBypx.x, destinationBypx.y );
+
+      console.log(
+        "exit transform animation setInitDestinationBypx",
+        destinationBypx.x,
+        destinationBypx.y
+      );
 
       console.log("exit transform animation");
     } else {
       throw new Error("check whether motion Div Ref exist");
-      
-      
     }
   };
   const EnterAnimationEffect = () => {
     // const [diffX, diffY] = calculateTheValueForTranslation();
     // setTransformXY({ x: diffX, y: diffY });
-    const targetWidth = window.innerWidth / 3;
+    const targetWidth = window.innerWidth / 2;
 
     // const targetHeight = window.innerWidth / 2;
     setAnimateWidth(targetWidth);
@@ -226,7 +223,7 @@ function CardForm({
       );
     }
 
-    const [destinationX, destinationY] = [window.innerWidth / 3, 100];
+    const [destinationX, destinationY] = [window.innerWidth / 4, 100];
     setDestinationBypx({ x: destinationX, y: destinationY });
     setTransformSideEffect(false);
     console.log(
@@ -235,7 +232,6 @@ function CardForm({
     );
   };
   const ExitAnimationEffect = () => {
-
     setAnimateWidth("100%");
     setAnimateHeight("100%");
     console.log("side effect of ExitAnimationEffect");
@@ -249,12 +245,11 @@ function CardForm({
     setInitDestinationBypx({ x: destinationBypx.x, y: destinationBypx.y });
   };
   const mouseInHandler = () => {
-
     if (transform) {
     } else if (noDiffBetweenInItAndActual === false) {
       setInitDestinationBypx({ x: "auto", y: "auto" });
-      setInitAnimateWidth("100%")
-      setInitAnimateHeight("100%")
+      setInitAnimateWidth("100%");
+      setInitAnimateHeight("100%");
       setNoDiffBetweenInItAndActual(true);
     } else if (transform === false) {
       setMouseIn(true);
@@ -282,9 +277,14 @@ function CardForm({
     const resetHightState = () => {
       const heightString = animateHeight.toString().replace("px", "");
       const heightNumber = Number(heightString);
+      const windowHeight = window.innerHeight;
+      const windowWidth = window.innerWidth;
       console.log("heightNumber in resetHightState", heightString);
 
-      if (window.innerHeight > 1000 && heightNumber <= 1000) {
+      if (windowWidth < 500) {
+        setAnimateHeight(windowHeight);
+        setInitAnimateHeight(windowHeight);
+      } else if (window.innerHeight > 1000 && heightNumber <= 1000) {
         setAnimateHeight(responsiveHeight.tall);
         setInitAnimateHeight(responsiveHeight.tall);
         console.log(
@@ -299,7 +299,7 @@ function CardForm({
           "EnterAnimationEffect set height for destination",
           responsiveHeight.mid
         );
-      } else if (window.innerHeight > 600 && heightNumber <= 600) {
+      } else if (window.innerHeight > 500 && heightNumber <= 500) {
         setAnimateHeight(responsiveHeight.short);
         setInitAnimateHeight(responsiveHeight.short);
 
@@ -307,9 +307,9 @@ function CardForm({
           "EnterAnimationEffect set height for destination",
           responsiveHeight.short
         );
-      } else if (window.innerHeight < 600 && heightNumber > 600) {
-        setAnimateHeight(responsiveHeight.base);
-        setInitAnimateHeight(responsiveHeight.base);
+      } else if (window.innerHeight < 500) {
+        setAnimateHeight(windowHeight - 100);
+        setInitAnimateHeight(windowHeight - 100);
 
         console.log(
           "EnterAnimationEffect set height for destination",
@@ -317,20 +317,39 @@ function CardForm({
         );
       }
     };
-    const handleResize = () => {
-      if (transform) {
-        const [diffX, diffY] = [
-          calculateTheValueForTranslation()[0],
-          calculateTheValueForTranslation()[1],
-        ];
-        const targetWidth = window.innerWidth / 3;
-        const targetHeight = window.innerWidth / 2;
+    const resetWidthState = () => {
+      const widthString = animateHeight.toString().replace("px", "");
+      const widthNumber = Number(widthString);
+      const [diffX, diffY] = [
+        calculateTheValueForTranslation()[0],
+        calculateTheValueForTranslation()[1],
+      ];
+
+      if (window.innerWidth < 500 && widthNumber > 500) {
+        const targetWidth = window.innerWidth;
+
+        setAnimateWidth(targetWidth);
+        setInitAnimateWidth(targetWidth);
+        // setInitDestinationBypx({ x: diffX, y: diffY });
+        // setDestinationBypx({ x: diffX, y: diffY });
+        setInitDestinationBypx({ x: 0, y: 0 });
+        setDestinationBypx({ x: 0, y: 0 });
+        console.log("widthNumber in resetWidthState", widthNumber);
+      } else {
+        const targetWidth = window.innerWidth / 2;
+
         setAnimateWidth(targetWidth);
         // setAnimateHeight(targetHeight);
         setInitAnimateWidth(targetWidth);
         // setInitAnimateHeight(targetHeight);
         setInitDestinationBypx({ x: diffX, y: diffY });
         setDestinationBypx({ x: diffX, y: diffY });
+        console.log("widthNumber in resetWidthState", widthNumber);
+      }
+    };
+    const handleResize = () => {
+      if (transform) {
+        resetWidthState();
         resetHightState();
       }
       console.log("handleResize triggered in useeffects");
@@ -347,7 +366,7 @@ function CardForm({
     return (
       <>
         <motion.div
-        ref={motionDiv}
+          ref={motionDiv}
           className="noteBoarder border-2 p-2"
           initial={{
             width: initAnimateWidth,
@@ -395,7 +414,7 @@ function CardForm({
                   suppressContentEditableWarning
                 ></div>
                 <button
-                  className="icon-hover icon-position"
+                  className="icon-hover icon-position w-[10%]"
                   onClick={(e) => {
                     clickPinButtonHandler(e);
                   }}
@@ -413,13 +432,19 @@ function CardForm({
                    tall:h-[${responsiveHeight.tall}px]  */}
               <div
                 className={` 
-                   w-full editableDiv   overflow-auto`}
+                   w-full editableDiv   overflow-auto m-5`}
                 ref={divContentRef}
                 contentEditable
                 dangerouslySetInnerHTML={{ __html: inputContent }}
                 suppressContentEditableWarning
                 autoFocus={true}
               ></div>
+              <div className="flex justify-end w-full bg-darkbg text-white  rounded-lg 
+              absolute left-0 bottom-0">
+                <button onClick={(e) => clickSubmitButtonHandler(e)}>
+                  Close
+                </button>
+              </div>
             </div>
           ) : (
             <>
